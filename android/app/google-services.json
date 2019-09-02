@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "529272993947",
+    "firebase_url": "https://mplanner-x.firebaseio.com",
+    "project_id": "mplanner-x",
+    "storage_bucket": "mplanner-x.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529272993947:android:950b6f59ed117996",
+        "android_client_info": {
+          "package_name": "com.mplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "529272993947-2nms5nsu5r70kpnfn1b9tv420l20i3ov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXu9euaX8IvDMIRWLiaheVoqlHR6gIBkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "529272993947-2nms5nsu5r70kpnfn1b9tv420l20i3ov.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "529272993947-50lr3dl9ko8lmu7c723945dg5stq381o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hk.step_counter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

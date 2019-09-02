@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>529272993947-dtfugtdlr3ve6iv2kgtp4tlashhc75mf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.529272993947-dtfugtdlr3ve6iv2kgtp4tlashhc75mf</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>529272993947-o21s2pf98e6v0a3cek1bhr6gdsagbt6q.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCx9YzzlWo29ICqxqOvdEL-pkQ8ABZS87w</string>
+	<key>GCM_SENDER_ID</key>
+	<string>529272993947</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mplanner</string>
+	<key>PROJECT_ID</key>
+	<string>mplanner-x</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mplanner-x.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:529272993947:ios:950b6f59ed117996</string>
+	<key>DATABASE_URL</key>
+	<string>https://mplanner-x.firebaseio.com</string>
+</dict>
+</plist>
