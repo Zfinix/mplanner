@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: EdgeInsets.fromLTRB(30.0, 0, 30.0, 0),
       child: TextFormField(
-        initialValue: 'qqqqqq',
+        //initialValue: 'qqqqqq',
         validator: (value) {
           if (value.length > 4) {
             setState(() {
@@ -157,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: EdgeInsets.fromLTRB(30.0, 0, 30.0, 0),
       child: TextFormField(
-        initialValue: 'chiziaruhoma@gmail.com',
+       // initialValue: 'chiziaruhoma@gmail.com',
         validator: (value) {
           if (validator.isEmail(value)) {
             setState(() {

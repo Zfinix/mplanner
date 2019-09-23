@@ -18,7 +18,7 @@ class _IntersitPageState extends State<IntersitPage> {
   @override
   void initState() {
     super.initState();
-    login();
+    //  login();
   }
 
   @override
@@ -53,40 +53,46 @@ class _IntersitPageState extends State<IntersitPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    width: 169,
-                    height: 60,
-                    child: FlatButton(
-                      child: Text(
-                        'CREATE ACCOUNT',
-                        style: TextStyle(fontSize: 12),
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      height: 60,
+                      width: 100,
+                      child: FlatButton(
+                        child: Text(
+                          'CREATE ACCOUNT',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        color: Colors.lightGreen,
+                        textColor: Colors.white,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PlanPage()));
+                        },
                       ),
-                      color: Colors.lightGreen,
-                      textColor: Colors.white,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PlanPage()));
-                      },
                     ),
                   ),
-                  Container(
-                    height: 60,
-                    width: 166,
-                    child: FlatButton(
-                      child: Text(
-                        'SIGN IN',
-                        style: TextStyle(fontSize: 12),
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      width: 100,
+                      height: 60,
+                      child: FlatButton(
+                        child: Text(
+                          'SIGN IN',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
+                        },
                       ),
-                      color: Colors.white,
-                      textColor: Colors.black,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
-                      },
                     ),
                   )
                 ],
@@ -100,15 +106,14 @@ class _IntersitPageState extends State<IntersitPage> {
 
   void login() async {
     FirebaseUser user = await auth.getCurrentUser();
-    if(user != null){
-       Navigator.pop(context);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Controller(user: user),
-            ),
-          ); 
-      
+    if (user != null) {
+      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Controller(user: user),
+        ),
+      );
     }
   }
 }
