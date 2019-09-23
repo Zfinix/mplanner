@@ -58,7 +58,7 @@ class _UserListItemState extends State<UserListItem> {
   }
 
   getUserLayout() {
-    print(widget.usersSnapshot.value);
+
    /*  if (widget.usersSnapshot.value['email'] == widget.currentUserEmail) {}
     */ return /* widget.usersSnapshot.value != null &&
             widget.usersSnapshot.value['email'] != widget.currentUserEmail

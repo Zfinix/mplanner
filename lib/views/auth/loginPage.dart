@@ -136,6 +136,7 @@ class _LoginPageState extends State<LoginPage> {
             setState(() {
               password = value;
             });
+            return null;
           } else if (value.isEmpty) {
             return "This field can't be left empty";
           } else {
@@ -162,6 +163,7 @@ class _LoginPageState extends State<LoginPage> {
             setState(() {
               email = value;
             });
+            return null;
           } else if (value.isEmpty) {
             return "This field can't be left empty";
           } else {

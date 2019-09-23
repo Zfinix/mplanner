@@ -179,6 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
             setState(() {
               password = value;
             });
+            return null;
           } else if (value.isEmpty) {
             return "This field can't be left empty";
           } else {
@@ -205,6 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
             setState(() {
               cmPassword = value;
             });
+            return null;
           } else if (value.isEmpty) {
             return "This field can't be left empty";
           } else {
@@ -231,6 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
             setState(() {
               name = value;
             });
+            return null;
           } else if (value.isEmpty) {
             return "This field can't be left empty";
           } else {
@@ -256,6 +259,7 @@ class _RegisterPageState extends State<RegisterPage> {
             setState(() {
               email = value;
             });
+            return null;
           } else if (value.isEmpty) {
             return "This field can't be left empty";
           } else {

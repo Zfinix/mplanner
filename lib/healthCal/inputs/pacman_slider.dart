@@ -4,8 +4,6 @@ import 'package:mplanner/healthCal/functions/pacmanSlider.dart';
 import 'package:mplanner/healthCal/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 const double _pacmanWidth = 21.0;
 const double _sliderHorizontalMargin = 24.0;
 const double _dotsLeftMargin = 8.0;

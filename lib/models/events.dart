@@ -15,10 +15,10 @@ class Events {
       : assert(map['dateTime'] != null),
         assert(map['event'] != null),
         title = map['event'],
-         image = map['image'],
-         details = map['details'],
-          organizer = map['organizer'],
-           venue = map['venue'],
+        image = map['image'],
+        details = map['details'],
+        organizer = map['organizer'],
+        venue = map['venue'],
         timestamp = map['dateTime'];
 
   Events.fromSnapshot(DocumentSnapshot snapshot)

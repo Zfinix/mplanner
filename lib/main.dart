@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mplanner/views/auth/loginPage.dart';
+import 'package:mplanner/views/home/fragments/homeFrag.dart';
 import 'package:mplanner/views/intersit/intersitPage.dart';
 
-import 'package:mplanner/healthCal/main.dart';
+
 
 void main() => runApp(MyApp());
 

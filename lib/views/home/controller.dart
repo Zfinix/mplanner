@@ -5,7 +5,6 @@ import 'package:mplanner/healthCal/main.dart';
 import 'package:mplanner/utils/colors.dart';
 import 'package:mplanner/views/chat/views/ChatScreen.dart';
 import 'package:mplanner/views/chat/views/ChooseUserScreen.dart';
-import 'package:mplanner/views/home/fragments/chatFrag.dart';
 import 'package:mplanner/views/home/fragments/homeFrag.dart';
 
 class Controller extends StatefulWidget {
@@ -30,9 +29,9 @@ class _ControllerState extends State<Controller> {
   _setController() {
     setState(() {
       screens = [
-        ChatScreen(
+        ChooseScreen(
           signedInUser: widget.user,
-          userName: widget.user.displayName,
+          userId: widget.user.uid,
         ),
         HomeFragment(),
         FitnessDashboard(),

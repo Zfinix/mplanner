@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/views/auth/loginPage.dart';
+import 'package:mplanner/views/chat/auth/baseAuth.dart';
+import 'package:mplanner/views/home/controller.dart';
 import 'package:mplanner/views/intersit/planPage.dart';
 
 import 'package:mplanner/widgets/imageBgWidget.dart';
@@ -10,6 +13,14 @@ class IntersitPage extends StatefulWidget {
 }
 
 class _IntersitPageState extends State<IntersitPage> {
+  final BaseAuth auth = new Auth();
+
+  @override
+  void initState() {
+    super.initState();
+    login();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ImageBGScaffold(
@@ -40,10 +51,11 @@ class _IntersitPageState extends State<IntersitPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
                     width: 169,
-                    height: 50,
+                    height: 60,
                     child: FlatButton(
                       child: Text(
                         'CREATE ACCOUNT',
@@ -60,8 +72,8 @@ class _IntersitPageState extends State<IntersitPage> {
                     ),
                   ),
                   Container(
-                    height: 50,
-                    width: 165,
+                    height: 60,
+                    width: 166,
                     child: FlatButton(
                       child: Text(
                         'SIGN IN',
@@ -84,5 +96,19 @@ class _IntersitPageState extends State<IntersitPage> {
         ),
       ),
     );
+  }
+
+  void login() async {
+    FirebaseUser user = await auth.getCurrentUser();
+    if(user != null){
+       Navigator.pop(context);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Controller(user: user),
+            ),
+          ); 
+      
+    }
   }
 }

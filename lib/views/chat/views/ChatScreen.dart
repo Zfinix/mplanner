@@ -1,28 +1,35 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mplanner/views/auth/loginPage.dart';
 import 'package:mplanner/views/chat/auth/baseAuth.dart';
 import 'package:mplanner/views/chat/widgets/ChatMessageListItem.dart';
-//import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:image_picker/image_picker.dart';
 
 final auth = FirebaseAuth.instance;
 var currentUserEmail;
+// ignore: unused_element
 var _scaffoldContext;
 
 class ChatScreen extends StatefulWidget {
+  final reference;
   final String userName;
+  final String recieverId;
   final FirebaseUser signedInUser;
 
   const ChatScreen(
-      {Key key, @required this.userName, @required this.signedInUser})
+      {Key key,
+      @required this.userName,
+      @required this.signedInUser,
+      this.reference,
+      this.recieverId})
       : super(key: key);
 
   @override
@@ -33,11 +40,6 @@ class ChatScreen extends StatefulWidget {
 
 class ChatScreenState extends State<ChatScreen> {
   final BaseAuth auth = new Auth();
-
-  var reference = FirebaseDatabase.instance
-      .reference()
-      .child('messages')
-      .child("B33@B8yb7vt79v75vt77431dH@&7");
 
   final TextEditingController _textEditingController =
       new TextEditingController();
@@ -52,53 +54,50 @@ class ChatScreenState extends State<ChatScreen> {
           flexibleSpace: _buildTitle(),
           elevation:
               Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
-          /* actions: <Widget>[
-            new IconButton(
-                icon: new Icon(Icons.exit_to_app), onPressed: _signOut)
-          ], */
+         
         ),
         body: new Container(
-            child: new Column(
-              children: <Widget>[
-                new Flexible(
-                  child: new FirebaseAnimatedList(
-                    query: reference,
-                    padding: const EdgeInsets.all(8.0),
-                    reverse: true,
-                    sort: (a, b) => b.key.compareTo(a.key),
-                    //comparing timestamp of messages to check which one would appear first
-                    itemBuilder: (_, DataSnapshot messageSnapshot,
-                        Animation<double> animation, x) {
-                      return new ChatMessageListItem(
-                        messageSnapshot: messageSnapshot,
-                        animation: animation,
-                        currentUserEmail: currentUserEmail,
-                      );
-                    },
-                  ),
+          child: new Column(
+            children: <Widget>[
+              new Flexible(
+                child: new FirebaseAnimatedList(
+                  query: widget.reference,
+                  padding: const EdgeInsets.all(8.0),
+                  reverse: true,
+                  sort: (a, b) => b.key.compareTo(a.key),
+                  //comparing timestamp of messages to check which one would appear first
+                  itemBuilder: (_, DataSnapshot messageSnapshot,
+                      Animation<double> animation, x) {
+                    return new ChatMessageListItem(
+                      messageSnapshot: messageSnapshot,
+                      animation: animation,
+                      currentUserEmail: currentUserEmail,
+                    );
+                  },
                 ),
-                _isLoading
-                    ? Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Container(
-                            height: 30,
-                            width: 30,
-                            child: CircularProgressIndicator()),
-                      )
-                    : Container(),
-                new Divider(height: 1.0),
-                new Container(
-                  decoration:
-                      new BoxDecoration(color: Theme.of(context).cardColor),
-                  child: _buildTextComposer(),
-                ),
-                new Builder(builder: (BuildContext context) {
-                  _scaffoldContext = context;
-                  return new Container(width: 0.0, height: 0.0);
-                })
-              ],
-            ),
-           ));
+              ),
+              _isLoading
+                  ? Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                          height: 30,
+                          width: 30,
+                          child: CircularProgressIndicator()),
+                    )
+                  : Container(),
+              new Divider(height: 1.0),
+              new Container(
+                decoration:
+                    new BoxDecoration(color: Theme.of(context).cardColor),
+                child: _buildTextComposer(),
+              ),
+              new Builder(builder: (BuildContext context) {
+                _scaffoldContext = context;
+                return new Container(width: 0.0, height: 0.0);
+              })
+            ],
+          ),
+        ));
   }
 
   CupertinoButton getIOSSendButton() {
@@ -138,7 +137,7 @@ class ChatScreenState extends State<ChatScreen> {
                       color: Theme.of(context).accentColor,
                     ),
                     onPressed: () async {
-                      /* await _ensureLoggedIn();
+                      await _ensureLoggedIn();
                       setState(() {
                         _isLoading = true;
                       });
@@ -163,7 +162,7 @@ class ChatScreenState extends State<ChatScreen> {
                           messageText: null, imageUrl: downloadUrl.toString());
                       setState(() {
                         _isLoading = false;
-                      }); */
+                      });
                     }),
               ),
               new Flexible(
@@ -204,7 +203,7 @@ class ChatScreenState extends State<ChatScreen> {
   void _sendMessage({String messageText, String imageUrl}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    reference.push().set({
+    widget.reference.push().set({
       'text': messageText,
       'email': widget.signedInUser.email,
       'imageUrl': imageUrl,
@@ -228,7 +227,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   _buildTitle() {
     return AppBar(
-      title: Text('Forum',
+      title: Text('${widget.userName}',
           style: TextStyle(
               //color: Colors.yellow,
               fontSize: 19,
