@@ -84,32 +84,35 @@ class _AddRecipeState extends State<AddRecipe> {
 
   buildImage() => Column(
         children: <Widget>[
-          Container(
-            height: 160,
-            width: 160,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-              boxShadow: [
-                new BoxShadow(
-                  offset: Offset(6, 20),
-                  spreadRadius: -17,
-                  color: Colors.black.withOpacity(0.5),
-                  blurRadius: 14,
-                ),
-              ],
-              image: DecorationImage(
-                  image: image != null ? FileImage(image) : AssetImage('')),
+          GestureDetector(
+            onTap: ()=> getImage(),
+            child: Container(
+              height: 160,
+              width: 160,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+                boxShadow: [
+                  new BoxShadow(
+                    offset: Offset(6, 20),
+                    spreadRadius: -17,
+                    color: Colors.black.withOpacity(0.5),
+                    blurRadius: 14,
+                  ),
+                ],
+                image: DecorationImage(
+                    image: image != null ? FileImage(image) : AssetImage('')),
+              ),
+              child: image == null
+                  ? IconButton(
+                      icon:
+                          Icon(Icons.add_a_photo, color: Colors.green, size: 50),
+                      onPressed: () async {
+                         getImage();
+                      },
+                    )
+                  : Container(),
             ),
-            child: image == null
-                ? IconButton(
-                    icon:
-                        Icon(Icons.add_a_photo, color: Colors.green, size: 50),
-                    onPressed: () async {
-                      await getImage();
-                    },
-                  )
-                : Container(),
           ),
         ],
       );
@@ -172,7 +175,7 @@ class _AddRecipeState extends State<AddRecipe> {
     return downloadUrl.toString();
   }
 
-  Future getImage() async {
+   getImage() async {
     try {
       var testFile = await ImagePicker.pickImage(source: ImageSource.gallery);
       setState(() {
@@ -190,6 +193,7 @@ class _AddRecipeState extends State<AddRecipe> {
         setState(() {
           isLoading = true;
         });
+        
 
         setState(() {
           recipe = new Recipes(titleText, DateTime.now(), imageUrl,
