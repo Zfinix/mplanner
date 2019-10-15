@@ -5,10 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mplanner/models/recipes.dart';
 import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
-import 'package:mplanner/views/auth/baseAuth.dart';
 
 class ProfilePage extends StatefulWidget {
   final UserModel userModel;

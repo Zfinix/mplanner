@@ -12,6 +12,7 @@ import 'package:mplanner/views/home/profilePage.dart';
 import 'package:mplanner/views/recipes/addRecipe.dart';
 import 'package:mplanner/views/recipes/recipesDetailPage.dart';
 import 'package:mplanner/widgets/recipeWidget.dart';
+import 'package:mplanner/views/intersit/intersitPage.dart'
 
 import '../dbDetails.dart';
 import '../foodPlanPage.dart';
@@ -104,6 +105,20 @@ class _HomeFragmentState extends State<HomeFragment> {
               );
             },
             tooltip: 'Profile',
+          ),
+           IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              auth.signOut(context);
+              Navigator.pop(context);
+               Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => IntersitPage(),
+                ),
+              );
+            },
+            tooltip: 'Logout',
           )
         ],
       ),
