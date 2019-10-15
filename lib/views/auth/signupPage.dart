@@ -127,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
         print("Creating ${user.email}'s Firebase Chat Account");
         val.updateProfile(updateUser).then((onValue) {
-          reference.push().set({
+          reference.child(user.uid).push().set({
             'userId': userId,
             'email': user.email,
             'userName': name,

@@ -41,58 +41,56 @@ class ChooseScreenState extends State<ChooseScreen> {
     database = FirebaseDatabase.instance;
     database.setPersistenceEnabled(true);
     database.setPersistenceCacheSizeBytes(10000000);
-    
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-       appBar: new AppBar(
+      appBar: new AppBar(
         title: new Text("Chat"),
-        
-      ), 
+      ),
       body: new Container(
-        child: Center(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              new Flexible(
-                child: new FirebaseAnimatedList(
-                  query: reference,
-                  padding: const EdgeInsets.only(top:18.0),
-                  reverse: false,
-                  sort: (a, b) => b.key.compareTo(a.key),
-                  //comparing timestamp of messages to check which one would appear first
-                  itemBuilder:
-                      (_, DataSnapshot data, Animation<double> animation, x) {
-                    var name;
-                    currentUserEmail = widget.signedInUser.email;
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:18.0),
-                      child: InkWell(
-                        onTap: () {
-                          if (data.value['userId'] != null) {
-                            setId(data.value['userId'], data.value['userName']);
-                           
-                            setState(() {
-                              _username = data.value['userName'];
-                            });
-                          }
-                        },
-                        child: new UserListItem(
-                          usersSnapshot: data,
-                          name: name,
-                          animation: animation,
-                          currentUserEmail: currentUserEmail,
-                          userId: data.value['userId'],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
+        child: new Column(
+          children: <Widget>[
+            new Flexible(
+              child: new FirebaseAnimatedList(
+                query: reference,
+                padding: const EdgeInsets.only(top: 18.0),
+                reverse: false,
+                sort: (a, b) => b.key.compareTo(a.key),
+                //comparing timestamp of messages to check which one would appear first
+                itemBuilder:
+                    (_, DataSnapshot data, Animation<double> animation, x) {
+                  var name;
+                  currentUserEmail = widget.signedInUser.email;
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: data.value['email'] == currentUserEmail
+                        ? Container()
+                        : InkWell(
+                            onTap: () {
+                              if (data.value['userId'] != null) {
+                                setId(data.value['userId'],
+                                    data.value['userName']);
+
+                                setState(() {
+                                  _username = data.value['userName'];
+                                });
+                              }
+                            },
+                            child: new UserListItem(
+                              usersSnapshot: data,
+                              name: name,
+                              animation: animation,
+                              currentUserEmail: currentUserEmail,
+                              userId: data.value['userId'],
+                            ),
+                          ),
+                  );
+                },
+              ),
+            )
+          ],
         ),
         decoration: Theme.of(context).platform == TargetPlatform.iOS
             ? new BoxDecoration(
@@ -105,7 +103,6 @@ class ChooseScreenState extends State<ChooseScreen> {
     );
   }
 
-
   setId(userId2, username) async {
     //  print("USERNAME: $_username");
     var chatId = await ChatUserConfig.runC(widget.userId, userId2);
@@ -115,14 +112,14 @@ class ChooseScreenState extends State<ChooseScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => ChatScreen(
-                signedInUser: widget.signedInUser,
-                userName: _username,
-                 reference: FirebaseDatabase.instance
+            signedInUser: widget.signedInUser,
+            userName: _username,
+            reference: FirebaseDatabase.instance
                 .reference()
                 .child('messages')
                 .child(chatId),
             recieverId: userId2,
-              ),
+          ),
         ),
       );
     }

@@ -18,7 +18,6 @@ class AddRecipe extends StatefulWidget {
 class _AddRecipeState extends State<AddRecipe> {
   Recipes recipe;
   File image;
-
   FirebaseStorage _storage = FirebaseStorage.instance;
   FirebaseUser user;
   String titleText, descText;
@@ -36,6 +35,7 @@ class _AddRecipeState extends State<AddRecipe> {
   loadData() async {
     user = await auth.getCurrentUser();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +101,7 @@ class _AddRecipeState extends State<AddRecipe> {
                   ),
                 ],
                 image: DecorationImage(
+                  fit: BoxFit.cover,
                     image: image != null ? FileImage(image) : AssetImage('')),
               ),
               child: image == null

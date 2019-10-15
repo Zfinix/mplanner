@@ -1,15 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:mplanner/models/recipes.dart';
+import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/db.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/utils/size.dart';
+import 'package:mplanner/views/auth/baseAuth.dart';
+import 'package:mplanner/views/home/profilePage.dart';
 import 'package:mplanner/views/recipes/addRecipe.dart';
 import 'package:mplanner/views/recipes/recipesDetailPage.dart';
 import 'package:mplanner/widgets/recipeWidget.dart';
 
 import '../dbDetails.dart';
+import '../foodPlanPage.dart';
 
 class HomeFragment extends StatefulWidget {
   final Widget child;
@@ -21,8 +26,18 @@ class HomeFragment extends StatefulWidget {
 
 class _HomeFragmentState extends State<HomeFragment> {
   FirebaseDatabase database;
+  final userReference = FirebaseDatabase.instance
+      .reference()
+      .child('users')
+      .orderByChild('userId');
+
+  BaseAuth auth = new Auth();
+  UserModel userModel;
+  FirebaseUser user;
+
   var reference;
   bool hasData = false;
+  String profileNode;
   @override
   void initState() {
     database = FirebaseDatabase.instance;
@@ -31,14 +46,66 @@ class _HomeFragmentState extends State<HomeFragment> {
     setState(() {
       reference = database.reference().child('recipes');
     });
+    loadUserData();
     super.initState();
+  }
+
+  loadUserData() async {
+    user = await auth.getCurrentUser();
+    var v = (await userReference.equalTo(user.uid).once());
+
+    if (v.value != null) {
+      setState(() {
+        userModel = UserModel.fromMap(v.value.values.toList()[0]);
+        profileNode = v.value.keys.toList()[0];
+      });
+    }
+  }
+
+  loadData() async {
+    var t = await reference.once();
+    if (t.value != null) {
+      setState(() {
+        hasData = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    loadData();
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.calendar_today),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FoodPlanPage(),
+                ),
+              );
+            },
+            tooltip: 'Food Calendar',
+          ),
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                      user: user,
+                      userModel: userModel,
+                      profileNode:profileNode,),
+                ),
+              );
+            },
+            tooltip: 'Profile',
+          )
+        ],
       ),
       body: Container(
         height: screenHeight(context),
@@ -105,7 +172,6 @@ class _HomeFragmentState extends State<HomeFragment> {
                 //comparing timestamp of messages to check which one would appear first
                 itemBuilder: (_, DataSnapshot dataSnapshot,
                     Animation<double> animation, int i) {
-                  hasData = true;
                   var recipe = Recipes.fromSnapshot(dataSnapshot);
 
                   if (i == 0) {

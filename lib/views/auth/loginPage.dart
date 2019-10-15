@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
             MaterialPageRoute(
               builder: (context) => Controller(user: user),
             ),
-          ); 
+          );
         }
       } catch (e) {
         print('Error: $e');
@@ -107,6 +107,13 @@ class _LoginPageState extends State<LoginPage> {
               builder: (_) => new AlertDialog(
                     title: new Text("Error"),
                     content: new Text("This password is invalid"),
+                  ));
+        } else if (e.toString().contains('ERROR_USER_NOT_FOUND')) {
+          showDialog(
+              context: context,
+              builder: (_) => new AlertDialog(
+                    title: new Text("Error"),
+                    content: new Text("There is no user record corresponding to this identifier. The user may have been deleted"),
                   ));
         }
       }
@@ -157,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: EdgeInsets.fromLTRB(30.0, 0, 30.0, 0),
       child: TextFormField(
-       // initialValue: 'chiziaruhoma@gmail.com',
+        // initialValue: 'chiziaruhoma@gmail.com',
         validator: (value) {
           if (validator.isEmail(value)) {
             setState(() {

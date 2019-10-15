@@ -58,21 +58,16 @@ class _UserListItemState extends State<UserListItem> {
   }
 
   getUserLayout() {
-
-   /*  if (widget.usersSnapshot.value['email'] == widget.currentUserEmail) {}
-    */ return /* widget.usersSnapshot.value != null &&
-            widget.usersSnapshot.value['email'] != widget.currentUserEmail
-        /* &&  usersSnapshot.value['userType'] != 'user' */
-        ?  */ListTile(
+     return ListTile(
             leading: new CircleAvatar(
-              backgroundImage: new NetworkImage("https://bit.ly/2BCsKbI"),
+              backgroundImage: new NetworkImage(widget.usersSnapshot.value['userPhotoUrl'].toString().isNotEmpty ? widget.usersSnapshot.value['userPhotoUrl'] :"https://bit.ly/2BCsKbI" ),
             ),
             title: new Text(widget.usersSnapshot.value['userName'],
                 style: new TextStyle(
                     fontSize: 16.0,
                     color: Colors.black,
                     fontWeight: FontWeight.bold)))
-       /*  : Container() */;
+         ;
   }
 
   _loadPref() async {
