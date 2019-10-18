@@ -7,7 +7,6 @@ import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/utils/validator.dart' as validator;
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -103,8 +102,6 @@ class _RegisterPageState extends State<RegisterPage> {
         saveChatAccountData(name, email, userId);
 
         print('Signed in to FirebaseAuth: $userId');
-
-        if (userId.length > 0 && userId != null) {}
       } catch (e) {
         print('Error: $e');
         //errorDialog(context, error: e);
@@ -120,33 +117,34 @@ class _RegisterPageState extends State<RegisterPage> {
       final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
       FirebaseUser user = await _firebaseAuth.currentUser();
 
-      FirebaseAuth.instance.currentUser().then((val) {
+      var updateUserAcct = FirebaseAuth.instance.currentUser().then((val) {
         UserUpdateInfo updateUser = UserUpdateInfo();
         updateUser.displayName = name;
         // updateUser.photoUrl = prefs.getString("profilePic");
-
         print("Creating ${user.email}'s Firebase Chat Account");
         val.updateProfile(updateUser).then((onValue) {
-          reference.child(user.uid).push().set({
+          reference.push().set({
             'userId': userId,
             'email': user.email,
             'userName': name,
             'userPhotoUrl': '',
-          }).then((value) async {
-            setState(() {
-              isLoading = false;
-            });
-            FirebaseUser user = await auth.getCurrentUser();
-            Navigator.pop(context);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Controller(user: user),
-              ),
-            );
           });
         });
       });
+
+      if (updateUserAcct != null) {
+        setState(() {
+          isLoading = false;
+        });
+        FirebaseUser user = await auth.getCurrentUser();
+        Navigator.pop(context);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Controller(user: user),
+          ),
+        );
+      }
     } catch (e) {
       print('Error: $e');
 
@@ -253,7 +251,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Padding(
       padding: EdgeInsets.fromLTRB(30.0, 0, 30.0, 0),
       child: TextFormField(
-       // initialValue: 'chiziaruhoma@gmail.com',
+        // initialValue: 'chiziaruhoma@gmail.com',
         validator: (value) {
           if (validator.isEmail(value)) {
             setState(() {

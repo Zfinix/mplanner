@@ -36,14 +36,14 @@ saveItem({item, key}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   print('Saved New Item Data');
-  await prefs.setString('$key', item);
+   prefs.setString('$key', item);
 }
 
 eraseItem({key}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   print('Erased New Item Data');
-  await prefs.remove('$key');
+  prefs.remove('$key');
 }
 
 Future<dynamic> getItemData({key}) async {

@@ -2,20 +2,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:mplanner/models/foodData.dart';
 import 'package:mplanner/models/recipes.dart';
 import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/db.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/utils/size.dart';
 import 'package:mplanner/views/auth/baseAuth.dart';
+import 'package:mplanner/views/chat/util/database.dart';
 import 'package:mplanner/views/home/profilePage.dart';
 import 'package:mplanner/views/recipes/addRecipe.dart';
 import 'package:mplanner/views/recipes/recipesDetailPage.dart';
 import 'package:mplanner/widgets/recipeWidget.dart';
-import 'package:mplanner/views/intersit/intersitPage.dart'
+import 'package:mplanner/views/intersit/intersitPage.dart';
 
 import '../dbDetails.dart';
-import '../foodPlanPage.dart';
+import 'package:mplanner/views/foodPlan/foodPlanPage.dart';
 
 class HomeFragment extends StatefulWidget {
   final Widget child;
@@ -39,6 +41,7 @@ class _HomeFragmentState extends State<HomeFragment> {
   var reference;
   bool hasData = false;
   String profileNode;
+
   @override
   void initState() {
     database = FirebaseDatabase.instance;
@@ -85,7 +88,9 @@ class _HomeFragmentState extends State<HomeFragment> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FoodPlanPage(),
+                  builder: (context) => FoodPlanPage(
+                    foodData: FoodDataModel.fromJson(foodJSONData),
+                  ),
                 ),
               );
             },
@@ -98,20 +103,21 @@ class _HomeFragmentState extends State<HomeFragment> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProfilePage(
-                      user: user,
-                      userModel: userModel,
-                      profileNode:profileNode,),
+                    user: user,
+                    userModel: userModel,
+                    profileNode: profileNode,
+                  ),
                 ),
               );
             },
             tooltip: 'Profile',
           ),
-           IconButton(
-            icon: Icon(Icons.person),
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
             onPressed: () {
               auth.signOut(context);
               Navigator.pop(context);
-               Navigator.pushReplacement(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => IntersitPage(),
@@ -216,6 +222,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                             desc: recipe.description,
                             profilePicUrl: recipe.profilePicUrl,
                             imageUrl: recipe.imageUrl,
+                            userId: recipe.userID,
                             timeStamp: recipe.timestamp)
                       ],
                     );
@@ -237,6 +244,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                           desc: recipe.description,
                           profilePicUrl: recipe.profilePicUrl,
                           imageUrl: recipe.imageUrl,
+                          userId: recipe.userID,
                           timeStamp: recipe.timestamp),
                     );
                   }
@@ -301,7 +309,7 @@ class DBCard extends StatelessWidget {
         image: DecorationImage(
             fit: BoxFit.cover,
             colorFilter: new ColorFilter.mode(
-                Colors.black.withOpacity(0.6), BlendMode.multiply),
+                Colors.black.withOpacity(0.74), BlendMode.multiply),
             image: AssetImage('assets/images/${dbItem?.image}.jpg')),
         borderRadius: BorderRadius.circular(20),
       ),

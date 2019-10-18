@@ -5,22 +5,25 @@ import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/utils/size.dart';
 import 'package:mplanner/views/chat/util/database.dart';
 
-FoodData foodData;
-
 class FoodPlanPage extends StatefulWidget {
-  FoodPlanPage({Key key}) : super(key: key);
+  final FoodDataModel foodData;
+  FoodPlanPage({Key key, this.foodData}) : super(key: key);
 
-  _FoodPlanPageState createState() => _FoodPlanPageState();
+  _FoodPlanPageState createState() =>
+      _FoodPlanPageState(foodData);
 }
 
 class _FoodPlanPageState extends State<FoodPlanPage> {
   var _currentDate = DateTime.now();
+  FoodDataModel foodDataModel;
+  FoodData _selectedItem;
+  _FoodPlanPageState(this.foodDataModel);
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      foodData = FoodDataModel.fromJson(foodJSONData).data[0];
+      _selectedItem = foodDataModel.data[0];
     });
   }
 
@@ -45,14 +48,14 @@ class _FoodPlanPageState extends State<FoodPlanPage> {
                 Column(
                   children: <Widget>[
                     //Loading the food into a list to display it
-                    for (var i = 0; i < foodData.content.length; i++)
+                    for (var i = 0; i < _selectedItem.content.length; i++)
                       Column(
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(left: 28.0),
                             child: Row(
                               children: <Widget>[
-                                Text(foodData.content[i].type,
+                                Text(_selectedItem.content[i].type,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 21,
@@ -69,19 +72,12 @@ class _FoodPlanPageState extends State<FoodPlanPage> {
                                 borderRadius: BorderRadius.circular(10)),
                             child: Column(
                               children: <Widget>[
-                                Text(foodData.content[i].desc,
+                                Text(_selectedItem.content[i].desc,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 21,
                                         fontWeight: FontWeight.w400)),
-                                /* customYMargin(20),
-                                 Text(
-                                    'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laud antium, totam rem aperiam…',
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w200)),
-                               */
+
                               ],
                             ),
                           ),
@@ -104,25 +100,27 @@ class _FoodPlanPageState extends State<FoodPlanPage> {
       this.setState(() {
         _currentDate = m;
 
-        /* m.weekday is for getting  days of the week. Example m.weekday = 1 is monday 
+        /* m.weekday is for getting  days of the week. Example m.weekday = 1 is monday
         and so non till m.weekday = 7 is sunday*/
 
         //foodJSONData is data from our database
 
         if (m.weekday == 1) {
-          foodData = FoodDataModel.fromJson(foodJSONData).data[0];
+          _selectedItem = foodDataModel.data[0];
         } else if (m.weekday == 2) {
-          foodData = FoodDataModel.fromJson(foodJSONData).data[1];
+          _selectedItem = foodDataModel.data[1];
         } else if (m.weekday == 3) {
-          foodData = FoodDataModel.fromJson(foodJSONData).data[2];
+          _selectedItem = foodDataModel.data[2];
         } else if (m.weekday == 4) {
-          foodData = FoodDataModel.fromJson(foodJSONData).data[3];
+          _selectedItem = foodDataModel.data[3];
         } else if (m.weekday == 5) {
-          foodData = FoodDataModel.fromJson(foodJSONData).data[4];
+          _selectedItem = foodDataModel.data[4];
         } else if (m.weekday == 6) {
-          foodData = FoodDataModel.fromJson(foodJSONData).data[5];
+          _selectedItem = foodDataModel.data[5];
         } else {
-          foodData = FoodDataModel.fromJson(foodJSONData).data[6];
+          print(foodDataModel.data.length);
+
+          _selectedItem = foodDataModel.data[6];
         }
       });
     } catch (e) {

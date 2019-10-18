@@ -3,12 +3,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mplanner/utils/size.dart';
 import 'package:mplanner/views/chat/auth/baseAuth.dart';
 import 'package:mplanner/views/chat/util/chatUserConfig.dart';
 import 'package:mplanner/views/chat/views/ChatScreen.dart';
 import 'package:mplanner/views/chat/widgets/UserListItem.dart';
-import 'package:mplanner/utils/margin.dart';
 
 final auth = FirebaseAuth.instance;
 var currentUserEmail;

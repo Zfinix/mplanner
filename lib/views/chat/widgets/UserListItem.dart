@@ -34,8 +34,6 @@ class _UserListItemState extends State<UserListItem> {
 
   @override
   Widget build(BuildContext context) {
-    //print(list.contains('${widget.userId}'));
-   /*  if (list != null && list.contains('${widget.userId}')) { */
       return new SizeTransition(
         sizeFactor: new CurvedAnimation(
             parent: widget.animation, curve: Curves.decelerate),
@@ -60,9 +58,9 @@ class _UserListItemState extends State<UserListItem> {
   getUserLayout() {
      return ListTile(
             leading: new CircleAvatar(
-              backgroundImage: new NetworkImage(widget.usersSnapshot.value['userPhotoUrl'].toString().isNotEmpty ? widget.usersSnapshot.value['userPhotoUrl'] :"https://bit.ly/2BCsKbI" ),
+              backgroundImage: new NetworkImage(widget?.usersSnapshot?.value['userPhotoUrl'].toString().isNotEmpty ? widget.usersSnapshot.value['userPhotoUrl'] :"https://bit.ly/2BCsKbI" ),
             ),
-            title: new Text(widget.usersSnapshot.value['userName'],
+            title: new Text(widget.usersSnapshot.value['userName'] ?? '',
                 style: new TextStyle(
                     fontSize: 16.0,
                     color: Colors.black,

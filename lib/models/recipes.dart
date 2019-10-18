@@ -22,7 +22,7 @@ class Recipes {
         description = map['description'],
         name = map['name'],
         userID = map['userID'],
-        timestamp = ''.isEmpty ? DateTime.now() :DateTime.parse(map['dateTime']);
+        timestamp = map['timestamp'].isEmpty ? DateTime.now() :DateTime.parse(map['dateTime']);
 
   Recipes.fromSnapshot(DataSnapshot snapshot)
       : this.fromMap(snapshot.value, key: snapshot.key);

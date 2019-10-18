@@ -163,7 +163,7 @@ class _AddRecipeState extends State<AddRecipe> {
     );
   }
 
-  Future<String> uploadThumbnail() async {
+  Future<String> uploadImage() async {
     StorageReference ref = _storage
         .ref()
         .child('recipes')
@@ -194,7 +194,11 @@ class _AddRecipeState extends State<AddRecipe> {
         setState(() {
           isLoading = true;
         });
-        
+
+
+        if(image != null){
+          imageUrl =  await uploadImage();
+        }
 
         setState(() {
           recipe = new Recipes(titleText, DateTime.now(), imageUrl,

@@ -32,72 +32,78 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: Text('Profile Page'),
       ),
-      body: ListView(children: <Widget>[
-        customYMargin(40),
-        Column(
-          children: <Widget>[
-            GestureDetector(
-                onTap: () => getImage(),
-                child: Container(
-                    height: 156,
-                    width: 156,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: BorderRadius.circular(220),
+      body: Form(
+        key: _formKey,
+        child: ListView(children: <Widget>[
+          customYMargin(40),
+          Column(
+            children: <Widget>[
+              GestureDetector(
+                  onTap: () => getImage(),
+                  child: Container(
+                      height: 156,
+                      width: 156,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.circular(220),
+                        ),
+                        child: Icon(Icons.camera_alt, size: 50),
                       ),
-                      child: Icon(Icons.camera_alt, size: 50),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(220),
+                        color: Colors.white,
+                        boxShadow: [
+                          new BoxShadow(
+                            offset: Offset(6, 20),
+                            spreadRadius: -17,
+                            color: Colors.black.withOpacity(0.4),
+                            blurRadius: 14,
+                          ),
+                        ],
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: image != null
+                                ? FileImage(image)
+                                : NetworkImage(widget.userModel.userPhotoUrl ??
+                                    'https://bit.ly/2BCsKbI')),
+                      ))),
+            ],
+          ),
+          customYMargin(40),
+          nameField(),
+          customYMargin(40),
+          emailField(),
+          customYMargin(40),
+          bioField(),
+          customYMargin(60),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              !isLoading
+                  ? Container(
+                      height: 50,
+                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      child: FlatButton(
+                          child: Text(
+                            'UPDATE PROFILE',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          color: Colors.green,
+                          textColor: Colors.white,
+                          onPressed: () => addRecipe()),
+                    )
+                  : Container(
+                      height: 45,
+                      width: 45,
+                      child: Column(
+                        children: <Widget>[CircularProgressIndicator()],
+                      ),
                     ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(220),
-                      color: Colors.white,
-                      boxShadow: [
-                        new BoxShadow(
-                          offset: Offset(6, 20),
-                          spreadRadius: -17,
-                          color: Colors.black.withOpacity(0.5),
-                          blurRadius: 14,
-                        ),
-                      ],
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: image != null
-                              ? FileImage(image)
-                              : NetworkImage('https://bit.ly/2BCsKbI')),
-                    ))),
-          ],
-        ),
-        customYMargin(40),
-        nameField(),
-        customYMargin(40),
-        emailField(),
-        customYMargin(40),
-        bioField(),
-        customYMargin(60),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            !isLoading
-                ? Container(
-                    height: 50,
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: FlatButton(
-                        child: Text(
-                          'UPDATE PROFILE',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        color: Colors.green,
-                        textColor: Colors.white,
-                        onPressed: () => addRecipe()),
-                  )
-                : Container(
-                    height: 45,
-                    width: 45,
-                    child: CircularProgressIndicator(),
-                  ),
-          ],
-        )
-      ]),
+            ],
+          )
+        ]),
+      ),
     );
   }
 
@@ -154,6 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 30),
       child: TextFormField(
+          initialValue: widget.userModel?.bio ?? '',
           validator: (value) {
             if (value.isNotEmpty) {
               setState(() {
@@ -203,21 +210,25 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() {
           isLoading = true;
         });
+
         if (image != null) {
           photoUrl = await uploadPhoto();
         }
 
         setState(() {
-          userModel = new UserModel(widget.userModel.email, photoUrl ?? '',
-              bioText, widget?.user?.displayName ?? 'Anonymous');
+          userModel = new UserModel(
+              widget.userModel.email,
+              photoUrl ?? '',
+              bioText,
+              widget.user.uid,
+              widget?.user?.displayName ?? 'Anonymous');
         });
 
         FirebaseDatabase.instance
             .reference()
             .child('users')
             .child(widget.profileNode)
-            .push()
-            .set(userModel.toJson())
+            .update(userModel.toJson())
             .then((value) async {
           setState(() {
             isLoading = false;
