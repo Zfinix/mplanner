@@ -10,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mplanner/views/auth/loginPage.dart';
 import 'package:mplanner/views/chat/auth/baseAuth.dart';
 import 'package:mplanner/views/chat/widgets/ChatMessageListItem.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:image_picker/image_picker.dart';
 
 final auth = FirebaseAuth.instance;
@@ -201,7 +200,6 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void _sendMessage({String messageText, String imageUrl}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
 
     widget.reference.push().set({
       'text': messageText,

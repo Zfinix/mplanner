@@ -3,7 +3,6 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:mplanner/models/foodData.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/utils/size.dart';
-import 'package:mplanner/views/chat/util/database.dart';
 
 class FoodPlanPage extends StatefulWidget {
   final FoodDataModel foodData;

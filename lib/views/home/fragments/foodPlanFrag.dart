@@ -7,7 +7,6 @@ import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/size.dart';
 import 'package:mplanner/views/auth/baseAuth.dart';
 import 'package:mplanner/views/foodPlan/addFoodPlan.dart';
-import 'package:mplanner/views/foodPlan/foodPlanPage.dart';
 import 'package:mplanner/widgets/recipeWidget.dart';
 
 

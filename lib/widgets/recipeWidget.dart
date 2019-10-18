@@ -17,7 +17,8 @@ class RecipeCard extends StatelessWidget {
       this.desc,
       this.title,
       this.profilePicUrl,
-      this.timeStamp, @required this.userId,
+      this.timeStamp,
+      @required this.userId,
       this.foodModel})
       : super(key: key);
 
@@ -84,16 +85,17 @@ class RecipeCard extends StatelessWidget {
   }
 
   void _gotoProfile(context) async {
+
+    if(userId != null) {
+
     var v = (await FirebaseDatabase.instance
         .reference()
         .child('users')
         .orderByChild('userId').equalTo(userId).once());
 
-    print(userId );
     if (v.value != null) {
 
        var userModel = UserModel.fromMap(v.value.values.toList()[0]);
-       var profileNode = v.value.keys.toList()[0];
 
        Navigator.push(
          context,
@@ -103,6 +105,7 @@ class RecipeCard extends StatelessWidget {
            ),
          ),
        );
+     }
     }
   }
 }

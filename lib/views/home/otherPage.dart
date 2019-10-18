@@ -1,8 +1,6 @@
-import 'dart:io';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:mplanner/models/foodData.dart';
 import 'package:mplanner/models/recipes.dart';
@@ -28,6 +26,7 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    super.initState();
     loadUserData();
     _controller = new TabController(length: 2, vsync: this);
   }
@@ -48,12 +47,7 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
     }
   }
 
-  File image;
-  FirebaseStorage _storage = FirebaseStorage.instance;
-  String name, bioText, photoUrl;
   bool isLoading = false;
-
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +177,7 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
                                       desc: recipe.description,
                                       profilePicUrl: recipe.profilePicUrl,
                                       imageUrl: recipe.imageUrl,
-                                      userId: recipe.userID,
+                                      userId: recipe.userId,
                                       timeStamp: recipe.timestamp),
                                 );
                               } else {

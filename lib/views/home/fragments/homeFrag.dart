@@ -222,7 +222,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                             desc: recipe.description,
                             profilePicUrl: recipe.profilePicUrl,
                             imageUrl: recipe.imageUrl,
-                            userId: recipe.userID,
+                            userId: recipe.userId,
                             timeStamp: recipe.timestamp)
                       ],
                     );
@@ -244,7 +244,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                           desc: recipe.description,
                           profilePicUrl: recipe.profilePicUrl,
                           imageUrl: recipe.imageUrl,
-                          userId: recipe.userID,
+                          userId: recipe.userId,
                           timeStamp: recipe.timestamp),
                     );
                   }

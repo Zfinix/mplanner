@@ -201,7 +201,7 @@ class _AddRecipeState extends State<AddRecipe> {
         }
 
         setState(() {
-          recipe = new Recipes(titleText, DateTime.now(), imageUrl,
+          recipe = new Recipes(titleText, DateTime.now(), imageUrl, user.uid,
               user?.photoUrl ?? '', descText, user?.displayName ?? 'Anonymous');
         });
 

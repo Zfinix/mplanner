@@ -15,7 +15,6 @@ dependencies:
   firebase_database: 2.0.1
   firebase_storage: 2.0.1
   cloud_firestore: 0.9.0
-  flutter_swiper: ^1.1.4
   bmnav: ^0.3.4
   flutter_svg: 0.13.1
   expandable_bottom_bar: any

@@ -28,7 +28,6 @@ class _UserListItemState extends State<UserListItem> {
   @override
   void initState() {
     _loadPref();
-    // TODO: implement initState
     super.initState();
   }
 

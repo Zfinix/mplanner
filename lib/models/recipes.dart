@@ -6,11 +6,11 @@ class Recipes {
   String profilePicUrl;
   String description;
   String name;
-  String userID;
+  String userId;
   DateTime timestamp;
   final String key;
 
-  Recipes(this.title, this.timestamp, this.imageUrl,this.profilePicUrl, this.description,
+  Recipes(this.title, this.timestamp, this.imageUrl, this.userId, this.profilePicUrl, this.description,
       this.name, {this.key});
 
   Recipes.fromMap( Map<dynamic, dynamic> map, {this.key})
@@ -21,7 +21,7 @@ class Recipes {
         profilePicUrl = map['profilePicUrl'],
         description = map['description'],
         name = map['name'],
-        userID = map['userID'],
+        userId = map['userId'],
         timestamp = map['timestamp'].isEmpty ? DateTime.now() :DateTime.parse(map['dateTime']);
 
   Recipes.fromSnapshot(DataSnapshot snapshot)
@@ -34,7 +34,7 @@ class Recipes {
     data['profilePicUrl'] = this.profilePicUrl;
     data['description'] = this.description;
     data['imageUrl'] = this.imageUrl;
-    data['userID'] = this.userID;
+    data['userId'] = this.userId;
     data['name'] = this.name;
     data['timestamp'] = this.timestamp.toIso8601String();
     return data;

@@ -10,7 +10,6 @@ import 'package:mplanner/views/chat/widgets/UserListItem.dart';
 
 final auth = FirebaseAuth.instance;
 var currentUserEmail;
-var _scaffoldContext;
 
 class ChooseScreen extends StatefulWidget {
   final String userId;
@@ -56,7 +55,6 @@ class ChooseScreenState extends State<ChooseScreen> {
                 padding: const EdgeInsets.only(top: 18.0),
                 reverse: false,
                 sort: (a, b) => b.key.compareTo(a.key),
-                //comparing timestamp of messages to check which one would appear first
                 itemBuilder:
                     (_, DataSnapshot data, Animation<double> animation, x) {
                   var name;
