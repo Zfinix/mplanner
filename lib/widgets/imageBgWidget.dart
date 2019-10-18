@@ -5,7 +5,6 @@ class ImageBGScaffold extends StatefulWidget {
   final String bg;
 
   ImageBGScaffold({Key key, @required this.child, @required this.bg}) : super(key: key);
-
   _ImageBGScaffoldState createState() => _ImageBGScaffoldState();
 }
 
@@ -20,12 +19,12 @@ class _ImageBGScaffoldState extends State<ImageBGScaffold> {
               decoration: new BoxDecoration(
                 image: new DecorationImage(
                   colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
-                  image: new AssetImage('assets/images/${widget.bg}.jpg'),
+                  image: new AssetImage("assets/images/${widget.bg}.jpg"),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            widget.child,
+             widget.child,
           ],
         ));
   }
