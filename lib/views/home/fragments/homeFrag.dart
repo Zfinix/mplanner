@@ -216,14 +216,26 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 fontWeight: FontWeight.w400, fontSize: 12),
                           ),
                         ),
-                        new RecipeCard(
-                            name: recipe.name,
-                            title: recipe.title,
-                            desc: recipe.description,
-                            profilePicUrl: recipe.profilePicUrl,
-                            imageUrl: recipe.imageUrl,
-                            userId: recipe.userId,
-                            timeStamp: recipe.timestamp)
+                       GestureDetector(
+                         onTap: () {
+                           Navigator.push(
+                             context,
+                             MaterialPageRoute(
+                                 fullscreenDialog: true,
+                                 builder: (context) => RecipeDetails(
+                                   recipe: recipe,
+                                 )),
+                           );
+                         },
+                          child: new RecipeCard(
+                              name: recipe.name,
+                              title: recipe.title,
+                              desc: recipe.description,
+                              profilePicUrl: recipe.profilePicUrl,
+                              imageUrl: recipe.imageUrl,
+                              userId: recipe.userId,
+                              timeStamp: recipe.timestamp),
+                        )
                       ],
                     );
                   } else {

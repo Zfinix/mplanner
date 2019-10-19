@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mplanner/models/foodData.dart';
 import 'package:mplanner/models/userModel.dart';
+import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/views/foodPlan/foodPlanPage.dart';
 import 'package:mplanner/views/home/otherPage.dart';
 
@@ -24,61 +25,64 @@ class RecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(20),
-      width: MediaQuery.of(context).size.width,
-      child: Card(
-        child: Column(
-          children: <Widget>[
-            InkWell(
-              onTap: ()=>_gotoProfile(context),
-              child: Row(
-                children: <Widget>[
-                  Flexible(
-                    flex: 6,
-                    child: MPAvatar(
-                      name: name ?? '',
-                    ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child:
-                        IconButton(icon: Icon(Icons.share), onPressed: () {}),
-                  ),
-                ],
+    return GestureDetector(
+      onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodPlanPage(
+                foodData: foodModel,
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FoodPlanPage(
-                      foodData: foodModel,
+          );
+        },
+
+      child: Container(
+        margin: EdgeInsets.all(20),
+        width: MediaQuery.of(context).size.width,
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              InkWell(
+                onTap: ()=>_gotoProfile(context),
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      flex: 6,
+                      child: MPAvatar(
+                        name: name ?? '',
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: imageUrl != null
-                  ? Container(
-                      height: 250,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(imageUrl))),
-                    )
-                  : Container(),
-            ),
-            Container(
-              padding: const EdgeInsets.all(18.0),
-              child: Text(
-                title ?? '',
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 16),
+                    Flexible(
+                      flex: 1,
+                      child:
+                          IconButton(icon: Icon(Icons.share), onPressed: () {}),
+                    ),
+                  ],
+                ),
               ),
-            )
-          ],
+
+              imageUrl != null
+                    ? Container(
+                        height: 250,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(imageUrl))),
+                      )
+                    : Container(),
+        yMargin30,
+          Container(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Text(
+                    title ?? '',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                )
+            ],
+          ),
         ),
       ),
     );

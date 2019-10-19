@@ -2,7 +2,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:mplanner/views/auth/baseAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:mplanner/views/home/controller.dart';
-import 'package:mplanner/widgets/imageBgWidget.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/utils/validator.dart' as validator;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,9 +24,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ImageBGScaffold(
-      child: _buildUI(),
-      bg: 'food2',
+    return Scaffold(
+      body: _buildUI(),
     );
   }
 

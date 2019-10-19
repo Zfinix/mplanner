@@ -36,7 +36,6 @@ class _AddRecipeState extends State<AddRecipe> {
     user = await auth.getCurrentUser();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +84,7 @@ class _AddRecipeState extends State<AddRecipe> {
   buildImage() => Column(
         children: <Widget>[
           GestureDetector(
-            onTap: ()=> getImage(),
+            onTap: () => getImage(),
             child: Container(
               height: 160,
               width: 160,
@@ -101,15 +100,15 @@ class _AddRecipeState extends State<AddRecipe> {
                   ),
                 ],
                 image: DecorationImage(
-                  fit: BoxFit.cover,
+                    fit: BoxFit.cover,
                     image: image != null ? FileImage(image) : AssetImage('')),
               ),
               child: image == null
                   ? IconButton(
-                      icon:
-                          Icon(Icons.add_a_photo, color: Colors.green, size: 50),
+                      icon: Icon(Icons.add_a_photo,
+                          color: Colors.green, size: 50),
                       onPressed: () async {
-                         getImage();
+                        getImage();
                       },
                     )
                   : Container(),
@@ -176,11 +175,13 @@ class _AddRecipeState extends State<AddRecipe> {
     return downloadUrl.toString();
   }
 
-   getImage() async {
+  getImage() async {
     try {
-      var testFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-      setState(() {
-        image = testFile;
+      await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 69).then((img) {
+        if (img != null){
+        setState(() {
+          image = img;
+        });}
       });
     } catch (e) {
       print(e.toString());
@@ -195,9 +196,8 @@ class _AddRecipeState extends State<AddRecipe> {
           isLoading = true;
         });
 
-
-        if(image != null){
-          imageUrl =  await uploadImage();
+        if (image != null) {
+          imageUrl = await uploadImage();
         }
 
         setState(() {

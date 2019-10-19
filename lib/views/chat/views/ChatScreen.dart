@@ -141,7 +141,7 @@ class ChatScreenState extends State<ChatScreen> {
                         _isLoading = true;
                       });
                       File imageFile = await ImagePicker.pickImage(
-                          source: ImageSource.gallery);
+                          source: ImageSource.gallery, imageQuality: 69);
                       int timestamp = new DateTime.now().millisecondsSinceEpoch;
                       StorageReference storageReference = FirebaseStorage
                           .instance

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mplanner/views/home/controller.dart';
-import 'package:mplanner/widgets/imageBgWidget.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/utils/validator.dart' as validator;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,9 +17,8 @@ class _LoginPageState extends State<LoginPage> {
   var isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return ImageBGScaffold(
-      child: _buildUI(),
-      bg: 'food1',
+    return Scaffold(
+      body: _buildUI(),
     );
   }
 

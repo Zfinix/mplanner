@@ -21,8 +21,7 @@ class Recipes {
         profilePicUrl = map['profilePicUrl'],
         description = map['description'],
         name = map['name'],
-        userId = map['userId'],
-        timestamp = map['timestamp'].isEmpty ? DateTime.now() :DateTime.parse(map['dateTime']);
+        userId = map['userId'];
 
   Recipes.fromSnapshot(DataSnapshot snapshot)
       : this.fromMap(snapshot.value, key: snapshot.key);

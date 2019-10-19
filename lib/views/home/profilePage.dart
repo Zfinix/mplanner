@@ -193,7 +193,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   getImage() async {
     try {
-      var testFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+      var testFile = await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 79);
       setState(() {
         image = testFile;
       });
@@ -221,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
               photoUrl ?? '',
               bioText,
               widget.user.uid,
-              widget?.user?.displayName ?? 'Anonymous');
+              widget?.user?.displayName ?? widget?.userModel?.userName);
         });
 
         FirebaseDatabase.instance

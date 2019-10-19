@@ -64,88 +64,86 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
                 body: Column(
                   children: <Widget>[
                     Flexible(
-                      flex: 3,
-                      child: ListView(children: <Widget>[
-                        customYMargin(40),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                                height: 86,
-                                width: 86,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(220),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    new BoxShadow(
-                                      offset: Offset(6, 20),
-                                      spreadRadius: -17,
-                                      blurRadius: 14,
-                                    ),
-                                  ],
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          widget.userModel.userPhotoUrl ??
-                                              'https://bit.ly/2BCsKbI')),
-                                )),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            customYMargin(40),
-                            Text(widget?.userModel?.userName ?? '',
-                                style: TextStyle(
-                                    fontSize: 23, fontWeight: FontWeight.bold)),
-                            customYMargin(10),
-                            Text(widget?.userModel?.email ?? '',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w300)),
-                            customYMargin(6),
-                            Text(widget?.userModel?.bio ?? '',
-                                style: TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.w200)),
-                            customYMargin(60),
-                          ],
-                        )
-                      ]),
-                    ),
-                    Divider(),
-                    Flexible(
                       flex: 5,
                       child: new TabBarView(
                         controller: _controller,
                         children: <Widget>[
-                          new FirebaseAnimatedList(
-                            query: FirebaseDatabase.instance
-                                .reference()
-                                .child('foodPlan'),
-                            padding: const EdgeInsets.all(8.0),
+                          Column(
+                            children: <Widget>[
+                              Flexible(
+                                flex: 3,
+                                child: Column(children: <Widget>[
+                                  customYMargin(20),
+                                  Container(
+                                      height: 96,
+                                      width: 96,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(220),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          new BoxShadow(
+                                            offset: Offset(6, 20),
+                                            spreadRadius: -17,
+                                            blurRadius: 14,
+                                          ),
+                                        ],
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                                widget.userModel.userPhotoUrl ??
+                                                    'https://bit.ly/2BCsKbI')),
+                                      )),
+                                  Text(widget?.userModel?.userName ?? '',
+                                      style: TextStyle(
+                                          fontSize: 23, fontWeight: FontWeight.bold)),
+                                  customYMargin(10),
+                                  Text(widget?.userModel?.email ?? '',
+                                      style: TextStyle(
+                                          fontSize: 16, fontWeight: FontWeight.w300)),
+                                  customYMargin(6),
+                                  Text(widget?.userModel?.bio ?? '',
+                                      style: TextStyle(
+                                          fontSize: 10, fontWeight: FontWeight.w200)),
+                                  customYMargin(10)
+                                ]),
+                              ),
+                              Divider(),
+                              Flexible(
+                                flex:5,
+                                child: new FirebaseAnimatedList(
+                                  query: FirebaseDatabase.instance
+                                      .reference()
+                                      .child('foodPlan'),
+                                  padding: const EdgeInsets.all(8.0),
 
-                            key: new PageStorageKey('meals'),
-                            sort: (a, b) => b.key.compareTo(a.key),
-                            //comparing timestamp of messages to check which one would appear first
-                            itemBuilder: (_, DataSnapshot dataSnapshot,
-                                Animation<double> animation, int i) {
-                              var foodModel =
-                                  FoodDataModel.fromMap(dataSnapshot.value);
-                              // print(foodModel.data.length);
-                              if (widget.userModel.userId ==
-                                  personalProfile.userId) {
-                                return new RecipeCard(
-                                    name: foodModel.name,
-                                    title: foodModel.title,
-                                    desc: foodModel.desc,
-                                    profilePicUrl: foodModel.photoUrl,
-                                    imageUrl: foodModel.imageUrl,
-                                    userId: null,
-                                    timeStamp: foodModel.timeStamp,
-                                    foodModel: foodModel);
-                              } else {
-                                return Container();
-                              }
-                            },
+                                  key: new PageStorageKey('meals'),
+                                  sort: (a, b) => b.key.compareTo(a.key),
+                                  //comparing timestamp of messages to check which one would appear first
+                                  itemBuilder: (_, DataSnapshot dataSnapshot,
+                                      Animation<double> animation, int i) {
+                                    var foodModel =
+                                        FoodDataModel.fromMap(dataSnapshot.value);
+                                    // print(foodModel.data.length);
+                                    if (widget?.userModel?.userId ==
+                                        personalProfile?.userId) {
+
+
+                                      return new RecipeCard(
+                                          name: foodModel.name,
+                                          title: foodModel.title,
+                                          desc: foodModel.desc,
+                                          profilePicUrl: foodModel.photoUrl,
+                                          imageUrl: foodModel.imageUrl,
+                                          userId: null,
+                                          timeStamp: foodModel.timeStamp,
+                                          foodModel: foodModel);
+                                    } else {
+                                      return Container();
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                           new FirebaseAnimatedList(
                             query: FirebaseDatabase.instance

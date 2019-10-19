@@ -268,7 +268,7 @@ class _AddFoodPlanPageState extends State<AddFoodPlanPage> {
   getImage() async {
     try {
       var testFile = await ImagePicker.pickImage(
-          source: ImageSource.gallery, imageQuality: 79);
+          source: ImageSource.gallery, imageQuality: 69);
       if (testFile != null)
         setState(() {
           image = testFile;
