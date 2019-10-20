@@ -1,4 +1,3 @@
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -221,26 +220,12 @@ class _HomeFragmentState extends State<HomeFragment> {
                                       )),
                             );
                           },
-                          child: new RecipeCard(
-                              name: recipe.name,
-                              title: recipe.title,
-                              desc: recipe.description,
-                              profilePicUrl: recipe?.profilePicUrl ?? '',
-                              imageUrl: recipe.imageUrl,
-                              userId: recipe.userId),
+                          child: new RecipeCard(recipe: recipe),
                         )
                       ],
                     );
                   } else {
-                    return  new RecipeCard(
-                          name: recipe.name,
-                          title: recipe.title,
-                          desc: recipe.description,
-                          profilePicUrl: recipe.profilePicUrl,
-                          imageUrl: recipe.imageUrl,
-                          userId: recipe.userId,
-                          timeStamp: recipe.timestamp
-                    );
+                    return new RecipeCard(recipe: recipe);
                   }
                 },
               ),

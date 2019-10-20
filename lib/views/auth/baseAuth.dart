@@ -9,7 +9,7 @@ abstract class BaseAuth {
   Future<String> signIn(String email, String password);
   Future<String> signUp(String email, String password);
   Future<FirebaseUser> getCurrentUser();
-  Future<UserModel> getCurrentUserData();
+  Future<UserModel> getCurrentUserData({userId});
   Future<void> signOut(context);
   Future<void> resetPassword(email, context);
 }
@@ -35,14 +35,14 @@ class Auth implements BaseAuth {
     return user;
   }
 
-  Future<UserModel> getCurrentUserData() async {
+  Future<UserModel> getCurrentUserData({userId}) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
 
     var v = (await FirebaseDatabase.instance
         .reference()
         .child('users')
         .orderByChild('userId')
-        .equalTo(user.uid)
+        .equalTo(userId ?? user.uid)
         .once());
 
     if (v.value != null) {

@@ -5,38 +5,31 @@ import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/views/foodPlan/foodPlanPage.dart';
 import 'package:mplanner/views/home/otherPage.dart';
+import 'package:mplanner/widgets/recipeWidget.dart';
 
 class FoodPlanWidget extends StatelessWidget {
-  final String name, imageUrl, profilePicUrl, desc, title;
-  final DateTime timeStamp;
-  final userId;
   final FoodDataModel foodModel;
-  const FoodPlanWidget(
-      {Key key,
-      this.name,
-      this.imageUrl,
-      this.desc,
-      this.title,
-      this.profilePicUrl,
-      this.timeStamp,
-      @required this.userId,
-      this.foodModel})
-      : super(key: key);
+  final bool canViewProfile;
+
+  const FoodPlanWidget({
+    Key key,
+    @required this.foodModel,
+    this.canViewProfile = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FoodPlanPage(
-                foodData: foodModel,
-              ),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FoodPlanPage(
+              foodData: foodModel,
             ),
-          );
-        },
-
+          ),
+        );
+      },
       child: Container(
         margin: EdgeInsets.all(20),
         width: MediaQuery.of(context).size.width,
@@ -44,13 +37,14 @@ class FoodPlanWidget extends StatelessWidget {
           child: Column(
             children: <Widget>[
               InkWell(
-                onTap: ()=>_gotoProfile(context),
+                onTap: () => _gotoProfile(context),
                 child: Row(
                   children: <Widget>[
                     Flexible(
                       flex: 6,
                       child: MPAvatar(
-                        name: name ?? '',
+                        name: foodModel?.name ?? '',
+                        userId: foodModel.userId,
                       ),
                     ),
                     Flexible(
@@ -61,26 +55,25 @@ class FoodPlanWidget extends StatelessWidget {
                   ],
                 ),
               ),
-
-              imageUrl != null
-                    ? Container(
-                        height: 250,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(imageUrl))),
-                      )
-                    : Container(),
-        yMargin30,
-          Container(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Text(
-                    title ?? '',
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                )
+              foodModel.imageUrl != null
+                  ? Container(
+                      height: 250,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(foodModel.imageUrl))),
+                    )
+                  : Container(),
+              yMargin30,
+              Container(
+                padding: const EdgeInsets.all(18.0),
+                child: Text(
+                  foodModel.title ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 16),
+                ),
+              )
             ],
           ),
         ),
@@ -89,46 +82,26 @@ class FoodPlanWidget extends StatelessWidget {
   }
 
   void _gotoProfile(context) async {
+    if (foodModel.userId != null &&canViewProfile) {
+      var v = (await FirebaseDatabase.instance
+          .reference()
+          .child('users')
+          .orderByChild('userId')
+          .equalTo(foodModel.userId)
+          .once());
 
-    if(userId != null) {
+      if (v.value != null) {
+        var userModel = UserModel.fromMap(v.value.values.toList()[0]);
 
-    var v = (await FirebaseDatabase.instance
-        .reference()
-        .child('users')
-        .orderByChild('userId').equalTo(userId).once());
-
-    if (v.value != null) {
-
-       var userModel = UserModel.fromMap(v.value.values.toList()[0]);
-
-       Navigator.push(
-         context,
-         MaterialPageRoute(
-           builder: (context) => OtherPage(
-             userModel:userModel,
-           ),
-         ),
-       );
-     }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtherPage(
+              userModel: userModel,
+            ),
+          ),
+        );
+      }
     }
-  }
-}
-
-class MPAvatar extends StatelessWidget {
-  final name;
-  final url;
-  const MPAvatar({Key key, this.name, this.url}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: ListTile(
-        title: Text(name ?? 'Anonymous'),
-        leading: new CircleAvatar(
-          backgroundImage: new NetworkImage(url ?? "https://bit.ly/2BCsKbI"),
-        ),
-      ),
-    );
   }
 }

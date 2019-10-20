@@ -6,7 +6,6 @@ import 'package:mplanner/models/recipes.dart';
 import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/views/auth/baseAuth.dart';
-import 'package:mplanner/views/recipes/recipesDetailPage.dart';
 import 'package:mplanner/widgets/foodPlanWidget.dart';
 import 'package:mplanner/widgets/imageBgWidget.dart';
 import 'package:mplanner/widgets/recipeWidget.dart';
@@ -54,7 +53,8 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile Page'),
+        title: Text(
+            '${widget.userModel.userName.contains(' ') ? widget.userModel.userName.split(' ')[0] : widget.userModel.userName}\'s Profile'),
       ),
       body: Center(
         child: Column(
@@ -159,13 +159,7 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
                                     if (widget?.userModel?.userId ==
                                         personalProfile?.userId) {
                                       return new FoodPlanWidget(
-                                          name: foodModel.name,
-                                          title: foodModel.title,
-                                          desc: foodModel.desc,
-                                          profilePicUrl: foodModel.photoUrl,
-                                          imageUrl: foodModel.imageUrl,
-                                          userId: null,
-                                          timeStamp: foodModel.timeStamp,
+                                          canViewProfile: false,
                                           foodModel: foodModel);
                                     } else {
                                       return Container();
@@ -188,15 +182,8 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
 
                               if (widget.userModel.userId ==
                                   personalProfile.userId) {
-                                new RecipeCard(
-                                    recipe: recipe,
-                                    name: recipe.name,
-                                    title: recipe.title,
-                                    desc: recipe.description,
-                                    profilePicUrl: recipe.profilePicUrl,
-                                    imageUrl: recipe.imageUrl,
-                                    userId: recipe.userId,
-                                    timeStamp: recipe.timestamp);
+                                return new RecipeCard(
+                                    recipe: recipe, canViewProfile: false);
                               } else {
                                 return Container();
                               }

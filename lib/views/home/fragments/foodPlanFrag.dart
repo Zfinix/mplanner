@@ -114,13 +114,6 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                   var foodModel = FoodDataModel.fromMap(dataSnapshot.value);
                   // print(foodModel.data.length);
                   return  FoodPlanWidget(
-                      name: foodModel.name,
-                      title: foodModel.title,
-                      desc: foodModel.desc,
-                      profilePicUrl: foodModel.photoUrl,
-                      imageUrl: foodModel.imageUrl,
-                      userId: foodModel.userId,
-                      timeStamp: foodModel.timeStamp,
                       foodModel: foodModel);
                 },
               ),

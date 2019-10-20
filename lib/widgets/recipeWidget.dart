@@ -3,39 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:mplanner/models/recipes.dart';
 import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
+import 'package:mplanner/views/chat/util/database.dart';
 import 'package:mplanner/views/home/otherPage.dart';
 import 'package:mplanner/views/recipes/recipesDetailPage.dart';
 
 class RecipeCard extends StatelessWidget {
-  final String name, imageUrl, profilePicUrl, desc, title;
-  final DateTime timeStamp;
   final Recipes recipe;
-  final userId;
-  const RecipeCard(
-      {Key key,
-      this.name,
-      this.imageUrl,
-      this.desc,
-      this.recipe,
-      this.title,
-      this.profilePicUrl,
-      this.timeStamp,
-      @required this.userId})
+  final bool canViewProfile;
+  const RecipeCard({Key key, @required this.recipe, this.canViewProfile = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RecipeDetails(
-                recipe: recipe,
-              ),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RecipeDetails(
+              recipe: recipe,
             ),
-          );
-        },
+          ),
+        );
+      },
       child: Container(
         margin: EdgeInsets.all(20),
         width: MediaQuery.of(context).size.width,
@@ -43,13 +33,14 @@ class RecipeCard extends StatelessWidget {
           child: Column(
             children: <Widget>[
               InkWell(
-                onTap: ()=>_gotoProfile(context),
+                onTap: () => _gotoProfile(context),
                 child: Row(
                   children: <Widget>[
                     Flexible(
                       flex: 6,
                       child: MPAvatar(
-                        name: name ?? '',
+                        name: recipe?.name ?? '',
+                        userId: recipe.userId,
                       ),
                     ),
                     Flexible(
@@ -60,26 +51,25 @@ class RecipeCard extends StatelessWidget {
                   ],
                 ),
               ),
-
-              imageUrl != null
-                    ? Container(
-                        height: 250,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(imageUrl))),
-                      )
-                    : Container(),
-        yMargin30,
-          Container(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Text(
-                    title ?? '',
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                )
+              recipe.imageUrl != null
+                  ? Container(
+                      height: 250,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(recipe.imageUrl))),
+                    )
+                  : Container(),
+              yMargin30,
+              Container(
+                padding: const EdgeInsets.all(18.0),
+                child: Text(
+                  recipe.title ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 16),
+                ),
+              )
             ],
           ),
         ),
@@ -88,46 +78,50 @@ class RecipeCard extends StatelessWidget {
   }
 
   void _gotoProfile(context) async {
+    if (recipe.userId != null && canViewProfile) {
+      var v = (await FirebaseDatabase.instance
+          .reference()
+          .child('users')
+          .orderByChild('userId')
+          .equalTo(recipe.userId)
+          .once());
 
-    if(userId != null) {
+      if (v.value != null) {
+        var userModel = UserModel.fromMap(v.value.values.toList()[0]);
 
-    var v = (await FirebaseDatabase.instance
-        .reference()
-        .child('users')
-        .orderByChild('userId').equalTo(userId).once());
-
-    if (v.value != null) {
-
-       var userModel = UserModel.fromMap(v.value.values.toList()[0]);
-
-       Navigator.push(
-         context,
-         MaterialPageRoute(
-           builder: (context) => OtherPage(
-             userModel:userModel,
-           ),
-         ),
-       );
-     }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtherPage(
+              userModel: userModel,
+            ),
+          ),
+        );
+      }
     }
   }
 }
 
 class MPAvatar extends StatelessWidget {
   final name;
-  final url;
-  const MPAvatar({Key key, this.name, this.url}) : super(key: key);
+  final userId;
+  const MPAvatar({Key key, this.name, @required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: ListTile(
-        title: Text(name ?? 'Anonymous'),
-        leading: new CircleAvatar(
-          backgroundImage: new NetworkImage(url ?? "https://bit.ly/2BCsKbI"),
-        ),
-      ),
+          title: Text(name ?? 'Anonymous'),
+          leading: new FutureBuilder(
+            future: getUserImage(userId),
+            builder: (BuildContext context, AsyncSnapshot<String> image) {
+              return new CircleAvatar(
+                backgroundImage: new NetworkImage(
+                    image.hasData ? image.data : "https://bit.ly/2BCsKbI"),
+              ); // image is ready
+            },
+          )),
     );
   }
 }

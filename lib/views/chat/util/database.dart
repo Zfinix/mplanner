@@ -1,3 +1,5 @@
+import 'package:mplanner/views/auth/baseAuth.dart';
+
 Map<String, dynamic> foodJSONData = {
   "data": [
     {
@@ -70,3 +72,9 @@ Map<String, dynamic> foodJSONData = {
     },
   ]
 };
+
+Future<String> getUserImage(userId) async {
+  BaseAuth auth = new Auth();
+  var v = await auth.getCurrentUserData(userId: userId);
+  return v.userPhotoUrl;
+}
