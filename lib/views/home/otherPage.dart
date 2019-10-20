@@ -7,6 +7,7 @@ import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/views/auth/baseAuth.dart';
 import 'package:mplanner/views/recipes/recipesDetailPage.dart';
+import 'package:mplanner/widgets/foodPlanWidget.dart';
 import 'package:mplanner/widgets/imageBgWidget.dart';
 import 'package:mplanner/widgets/recipeWidget.dart';
 
@@ -108,7 +109,8 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
                                           image: DecorationImage(
                                               fit: BoxFit.cover,
                                               image: NetworkImage(widget
-                                                              .userModel.userPhotoUrl !=
+                                                              .userModel
+                                                              .userPhotoUrl !=
                                                           null &&
                                                       widget
                                                           .userModel
@@ -156,7 +158,7 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
                                     // print(foodModel.data.length);
                                     if (widget?.userModel?.userId ==
                                         personalProfile?.userId) {
-                                      return new RecipeCard(
+                                      return new FoodPlanWidget(
                                           name: foodModel.name,
                                           title: foodModel.title,
                                           desc: foodModel.desc,
@@ -186,26 +188,15 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
 
                               if (widget.userModel.userId ==
                                   personalProfile.userId) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          fullscreenDialog: true,
-                                          builder: (context) => RecipeDetails(
-                                                recipe: recipe,
-                                              )),
-                                    );
-                                  },
-                                  child: new RecipeCard(
-                                      name: recipe.name,
-                                      title: recipe.title,
-                                      desc: recipe.description,
-                                      profilePicUrl: recipe.profilePicUrl,
-                                      imageUrl: recipe.imageUrl,
-                                      userId: recipe.userId,
-                                      timeStamp: recipe.timestamp),
-                                );
+                                new RecipeCard(
+                                    recipe: recipe,
+                                    name: recipe.name,
+                                    title: recipe.title,
+                                    desc: recipe.description,
+                                    profilePicUrl: recipe.profilePicUrl,
+                                    imageUrl: recipe.imageUrl,
+                                    userId: recipe.userId,
+                                    timeStamp: recipe.timestamp);
                               } else {
                                 return Container();
                               }

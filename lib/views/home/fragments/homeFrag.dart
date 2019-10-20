@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -227,31 +227,19 @@ class _HomeFragmentState extends State<HomeFragment> {
                               desc: recipe.description,
                               profilePicUrl: recipe?.profilePicUrl ?? '',
                               imageUrl: recipe.imageUrl,
-                              userId: recipe.userId,
-                              timeStamp: recipe.timestamp),
+                              userId: recipe.userId),
                         )
                       ],
                     );
                   } else {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) => RecipeDetails(
-                                    recipe: recipe,
-                                  )),
-                        );
-                      },
-                      child: new RecipeCard(
+                    return  new RecipeCard(
                           name: recipe.name,
                           title: recipe.title,
                           desc: recipe.description,
                           profilePicUrl: recipe.profilePicUrl,
                           imageUrl: recipe.imageUrl,
                           userId: recipe.userId,
-                          timeStamp: recipe.timestamp),
+                          timeStamp: recipe.timestamp
                     );
                   }
                 },

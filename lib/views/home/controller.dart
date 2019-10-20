@@ -39,7 +39,10 @@ class _ControllerState extends State<Controller> {
           signedInUser: widget.user,
           userId: widget.user.uid,
         ),
-        AddFoodPlanFragment(),
+        FoodPlanFragment(
+          profileNode: widget.profileNode,
+          userModel: widget.userModel,
+        ),
         HomeFragment(
           profileNode: widget.profileNode,
           userModel: widget.userModel,

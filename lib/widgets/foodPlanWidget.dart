@@ -1,26 +1,26 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mplanner/models/recipes.dart';
+import 'package:mplanner/models/foodData.dart';
 import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
+import 'package:mplanner/views/foodPlan/foodPlanPage.dart';
 import 'package:mplanner/views/home/otherPage.dart';
-import 'package:mplanner/views/recipes/recipesDetailPage.dart';
 
-class RecipeCard extends StatelessWidget {
+class FoodPlanWidget extends StatelessWidget {
   final String name, imageUrl, profilePicUrl, desc, title;
   final DateTime timeStamp;
-  final Recipes recipe;
   final userId;
-  const RecipeCard(
+  final FoodDataModel foodModel;
+  const FoodPlanWidget(
       {Key key,
       this.name,
       this.imageUrl,
       this.desc,
-      this.recipe,
       this.title,
       this.profilePicUrl,
       this.timeStamp,
-      @required this.userId})
+      @required this.userId,
+      this.foodModel})
       : super(key: key);
 
   @override
@@ -30,12 +30,13 @@ class RecipeCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RecipeDetails(
-                recipe: recipe,
+              builder: (context) => FoodPlanPage(
+                foodData: foodModel,
               ),
             ),
           );
         },
+
       child: Container(
         margin: EdgeInsets.all(20),
         width: MediaQuery.of(context).size.width,

@@ -12,9 +12,6 @@ import 'package:mplanner/utils/size.dart';
 import 'package:mplanner/views/auth/baseAuth.dart';
 
 class AddFoodPlanPage extends StatefulWidget {
-  
-  AddFoodPlanPage({Key key}) : super(key: key);
-
   _AddFoodPlanPageState createState() => _AddFoodPlanPageState();
 }
 

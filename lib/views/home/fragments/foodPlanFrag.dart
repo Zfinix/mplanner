@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -6,22 +6,22 @@ import 'package:mplanner/models/foodData.dart';
 import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/utils/size.dart';
-import 'package:mplanner/views/auth/baseAuth.dart';
 import 'package:mplanner/views/foodPlan/addFoodPlan.dart';
-import 'package:mplanner/widgets/recipeWidget.dart';
+import 'package:mplanner/widgets/foodPlanWidget.dart';
 
-class AddFoodPlanFragment extends StatefulWidget {
+
+class FoodPlanFragment extends StatefulWidget {
   final Widget child;
   final UserModel userModel;
   final profileNode;
 
-  AddFoodPlanFragment({Key key, this.child, this.userModel, this.profileNode})
+  FoodPlanFragment({Key key, this.child, this.userModel, this.profileNode})
       : super(key: key);
 
-  _AddFoodPlanFragmentState createState() => _AddFoodPlanFragmentState();
+  _FoodPlanFragmentState createState() => _FoodPlanFragmentState();
 }
 
-class _AddFoodPlanFragmentState extends State<AddFoodPlanFragment> {
+class _FoodPlanFragmentState extends State<FoodPlanFragment> {
   FirebaseDatabase database;
 
   var foodPlanRef;
@@ -113,8 +113,7 @@ class _AddFoodPlanFragmentState extends State<AddFoodPlanFragment> {
                     Animation<double> animation, int i) {
                   var foodModel = FoodDataModel.fromMap(dataSnapshot.value);
                   // print(foodModel.data.length);
-
-                  return new RecipeCard(
+                  return  FoodPlanWidget(
                       name: foodModel.name,
                       title: foodModel.title,
                       desc: foodModel.desc,
