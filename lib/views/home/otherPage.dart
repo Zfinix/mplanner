@@ -1,4 +1,3 @@
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/views/auth/baseAuth.dart';
 import 'package:mplanner/views/recipes/recipesDetailPage.dart';
+import 'package:mplanner/widgets/imageBgWidget.dart';
 import 'package:mplanner/widgets/recipeWidget.dart';
 
 class OtherPage extends StatefulWidget {
@@ -59,12 +59,11 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
         child: Column(
           children: <Widget>[
             Flexible(
-              flex: 5,
+              flex: 6,
               child: Scaffold(
                 body: Column(
                   children: <Widget>[
                     Flexible(
-                      flex: 5,
                       child: new TabBarView(
                         controller: _controller,
                         children: <Widget>[
@@ -74,42 +73,73 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
                                 flex: 3,
                                 child: Column(children: <Widget>[
                                   customYMargin(20),
-                                  Container(
-                                      height: 96,
-                                      width: 96,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(220),
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          new BoxShadow(
-                                            offset: Offset(6, 20),
-                                            spreadRadius: -17,
-                                            blurRadius: 14,
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          fullscreenDialog: true,
+                                          builder: (context) => ImageBGScaffold(
+                                            bg: widget.userModel != null &&
+                                                    widget.userModel
+                                                        .userPhotoUrl.isNotEmpty
+                                                ? widget.userModel.userPhotoUrl
+                                                : 'https://bit.ly/2BCsKbI',
+                                            isFromNetwork: true,
+                                            child: Container(),
                                           ),
-                                        ],
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                                widget.userModel.userPhotoUrl ??
-                                                    'https://bit.ly/2BCsKbI')),
-                                      )),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                        height: 86,
+                                        width: 86,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(220),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            new BoxShadow(
+                                              offset: Offset(6, 20),
+                                              spreadRadius: -17,
+                                              blurRadius: 14,
+                                            ),
+                                          ],
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(widget
+                                                              .userModel.userPhotoUrl !=
+                                                          null &&
+                                                      widget
+                                                          .userModel
+                                                          .userPhotoUrl
+                                                          .isNotEmpty
+                                                  ? widget
+                                                      .userModel.userPhotoUrl
+                                                  : 'https://bit.ly/2BCsKbI')),
+                                        )),
+                                  ),
+                                  customYMargin(10),
                                   Text(widget?.userModel?.userName ?? '',
                                       style: TextStyle(
-                                          fontSize: 23, fontWeight: FontWeight.bold)),
-                                  customYMargin(10),
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.bold)),
+                                  customYMargin(4),
                                   Text(widget?.userModel?.email ?? '',
                                       style: TextStyle(
-                                          fontSize: 16, fontWeight: FontWeight.w300)),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w300)),
                                   customYMargin(6),
                                   Text(widget?.userModel?.bio ?? '',
                                       style: TextStyle(
-                                          fontSize: 10, fontWeight: FontWeight.w200)),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w200)),
                                   customYMargin(10)
                                 ]),
                               ),
                               Divider(),
                               Flexible(
-                                flex:5,
+                                flex: 4,
                                 child: new FirebaseAnimatedList(
                                   query: FirebaseDatabase.instance
                                       .reference()
@@ -121,13 +151,11 @@ class _OtherPageState extends State<OtherPage> with TickerProviderStateMixin {
                                   //comparing timestamp of messages to check which one would appear first
                                   itemBuilder: (_, DataSnapshot dataSnapshot,
                                       Animation<double> animation, int i) {
-                                    var foodModel =
-                                        FoodDataModel.fromMap(dataSnapshot.value);
+                                    var foodModel = FoodDataModel.fromMap(
+                                        dataSnapshot.value);
                                     // print(foodModel.data.length);
                                     if (widget?.userModel?.userId ==
                                         personalProfile?.userId) {
-
-
                                       return new RecipeCard(
                                           name: foodModel.name,
                                           title: foodModel.title,

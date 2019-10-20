@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bmnav/bmnav.dart' as bmnav;
 import 'package:mplanner/healthCal/main.dart';
+import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/colors.dart';
 import 'package:mplanner/views/chat/views/ChooseUserScreen.dart';
 import 'package:mplanner/views/home/fragments/homeFrag.dart';
@@ -10,8 +11,12 @@ import 'fragments/foodPlanFrag.dart';
 
 class Controller extends StatefulWidget {
   final FirebaseUser user;
+  final UserModel userModel;
+  final profileNode;
 
-  const Controller({Key key, @required this.user}) : super(key: key);
+  const Controller(
+      {Key key, @required this.user, this.userModel, this.profileNode})
+      : super(key: key);
 
   _ControllerState createState() => _ControllerState();
 }
@@ -35,10 +40,16 @@ class _ControllerState extends State<Controller> {
           userId: widget.user.uid,
         ),
         AddFoodPlanFragment(),
-        HomeFragment(),
+        HomeFragment(
+          profileNode: widget.profileNode,
+          userModel: widget.userModel,
+        ),
         FitnessDashboard(),
       ];
-      currentScreen = HomeFragment();
+      currentScreen = HomeFragment(
+        profileNode: widget.profileNode,
+        userModel: widget.userModel,
+      );
     });
   }
 
@@ -53,7 +64,6 @@ class _ControllerState extends State<Controller> {
   _buildBottomNav() {
     return bmnav.BottomNav(
       iconStyle: bmnav.IconStyle(onSelectColor: accentColor),
-
       items: [
         bmnav.BottomNavItem(Icons.chat_bubble, label: 'Chat'),
         bmnav.BottomNavItem(Icons.fastfood, label: 'Add Food Plan'),

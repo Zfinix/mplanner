@@ -9,10 +9,10 @@ import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
 
 class ProfilePage extends StatefulWidget {
-  final UserModel userModel;
+  UserModel userModel;
   final String profileNode;
-  final FirebaseUser user;
-  ProfilePage({Key key, this.userModel, this.user, this.profileNode})
+
+  ProfilePage({Key key, @required this.userModel, @required this.profileNode})
       : super(key: key);
 
   _ProfilePageState createState() => _ProfilePageState();
@@ -27,7 +27,14 @@ class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print(widget.userModel.userPhotoUrl);
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile Page'),
@@ -63,10 +70,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: image != null
-                                ? FileImage(image)
-                                : NetworkImage(widget.userModel.userPhotoUrl ??
-                                    'https://bit.ly/2BCsKbI')),
+                            image: NetworkImage(
+                                widget?.userModel?.userPhotoUrl != null &&
+                                        widget.userModel.userPhotoUrl.isNotEmpty
+                                    ? widget.userModel.userPhotoUrl
+                                    : 'https://bit.ly/2BCsKbI')),
                       ))),
             ],
           ),
@@ -183,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
     StorageReference ref = _storage
         .ref()
         .child('profilePics')
-        .child("thumb_${widget.user.uid}.jpg");
+        .child("thumb_${widget.userModel.userId}.jpg");
     StorageUploadTask uploadTask = ref.putFile(image);
 
     var downloadUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
@@ -193,7 +201,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   getImage() async {
     try {
-      var testFile = await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 79);
+      var testFile = await ImagePicker.pickImage(
+          source: ImageSource.gallery, imageQuality: 79);
       setState(() {
         image = testFile;
       });
@@ -216,12 +225,8 @@ class _ProfilePageState extends State<ProfilePage> {
         }
 
         setState(() {
-          userModel = new UserModel(
-              widget.userModel.email,
-              photoUrl ?? '',
-              bioText,
-              widget.user.uid,
-              widget?.user?.displayName ?? widget?.userModel?.userName);
+          userModel = new UserModel(widget.userModel.email, photoUrl ?? '',
+              bioText, widget.userModel.userId, widget?.userModel?.userName);
         });
 
         FirebaseDatabase.instance
@@ -233,11 +238,10 @@ class _ProfilePageState extends State<ProfilePage> {
           setState(() {
             isLoading = false;
           });
+          Navigator.pop(context);
         });
-
-        Navigator.pop(context);
       } else {
-        //throw 'In';
+        throw 'An Error Occurred';
       }
     } catch (e) {
       setState(() {

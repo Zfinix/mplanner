@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mplanner/views/auth/baseAuth.dart';
 
 import 'package:mplanner/views/auth/loginPage.dart';
-import 'package:mplanner/views/chat/auth/baseAuth.dart';
 import 'package:mplanner/views/chat/util/Themes.dart';
 import 'package:mplanner/views/chat/views/ChooseUserScreen.dart';
 
@@ -27,6 +27,7 @@ class FlutterChatAppState extends State<FlutterChatApp> {
   }
 
   final BaseAuth auth = new Auth();
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(

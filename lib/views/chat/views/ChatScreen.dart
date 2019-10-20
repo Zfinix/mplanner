@@ -7,8 +7,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mplanner/views/auth/baseAuth.dart';
 import 'package:mplanner/views/auth/loginPage.dart';
-import 'package:mplanner/views/chat/auth/baseAuth.dart';
 import 'package:mplanner/views/chat/widgets/ChatMessageListItem.dart';
 //import 'package:image_picker/image_picker.dart';
 
@@ -169,7 +169,7 @@ class ChatScreenState extends State<ChatScreen> {
                   controller: _textEditingController,
                   onChanged: (String messageText) {
                     setState(() {
-                      _isComposingMessage = messageText.length > 0;
+                      _isComposingMessage = messageText.length > 0 && messageText.trimRight().isNotEmpty ;
                     });
                   },
                   onSubmitted: _textMessageSubmitted,
@@ -205,7 +205,7 @@ class ChatScreenState extends State<ChatScreen> {
       'text': messageText,
       'email': widget.signedInUser.email,
       'imageUrl': imageUrl,
-      'senderName': widget.userName,
+      'senderName': widget.signedInUser.displayName,
       'senderPhotoUrl': widget.signedInUser.photoUrl,
     });
   }

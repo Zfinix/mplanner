@@ -43,7 +43,6 @@ class _FoodPlanPageState extends State<FoodPlanPage> {
                   function: function,
                   currentDate: _currentDate,
                 ),
-                customYMargin(20),
                 Column(
                   children: <Widget>[
                     //Loading the food into a list to display it

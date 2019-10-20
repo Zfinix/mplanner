@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/views/auth/baseAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:mplanner/views/home/controller.dart';
@@ -134,12 +135,20 @@ class _RegisterPageState extends State<RegisterPage> {
         setState(() {
           isLoading = false;
         });
+        
+        UserModel userModel = await auth.getCurrentUserData();
+
         FirebaseUser user = await auth.getCurrentUser();
+
         Navigator.pop(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Controller(user: user),
+            builder: (context) => Controller(
+              user: user,
+              userModel: userModel,
+              profileNode: auth.profileNode,
+            ),
           ),
         );
       }
@@ -157,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
       width: 169,
       height: 50,
       child: FlatButton(
-        child: Text('LOGIN'),
+        child: Text('SIGNUP'),
         color: Colors.lightGreen,
         textColor: Colors.white,
         onPressed: () => newChatAccount(),

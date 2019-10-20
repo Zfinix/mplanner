@@ -6,11 +6,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mplanner/models/recipes.dart';
+import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/views/auth/baseAuth.dart';
 
 class AddRecipe extends StatefulWidget {
-  AddRecipe({Key key}) : super(key: key);
+  AddRecipe({
+    Key key,
+  }) : super(key: key);
 
   _AddRecipeState createState() => _AddRecipeState();
 }
@@ -19,12 +22,11 @@ class _AddRecipeState extends State<AddRecipe> {
   Recipes recipe;
   File image;
   FirebaseStorage _storage = FirebaseStorage.instance;
-  FirebaseUser user;
   String titleText, descText;
   bool isLoading = false;
+  UserModel userModel;
 
   final _formKey = GlobalKey<FormState>();
-
   BaseAuth auth = new Auth();
   @override
   void initState() {
@@ -33,7 +35,7 @@ class _AddRecipeState extends State<AddRecipe> {
   }
 
   loadData() async {
-    user = await auth.getCurrentUser();
+    userModel = await auth.getCurrentUserData();
   }
 
   @override
@@ -177,11 +179,13 @@ class _AddRecipeState extends State<AddRecipe> {
 
   getImage() async {
     try {
-      await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 69).then((img) {
-        if (img != null){
-        setState(() {
-          image = img;
-        });}
+      await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 69)
+          .then((img) {
+        if (img != null) {
+          setState(() {
+            image = img;
+          });
+        }
       });
     } catch (e) {
       print(e.toString());
@@ -191,7 +195,7 @@ class _AddRecipeState extends State<AddRecipe> {
   addRecipe() async {
     String imageUrl;
     try {
-      if (_formKey.currentState.validate()) {
+      if (_formKey.currentState.validate() && userModel != null) {
         setState(() {
           isLoading = true;
         });
@@ -201,8 +205,14 @@ class _AddRecipeState extends State<AddRecipe> {
         }
 
         setState(() {
-          recipe = new Recipes(titleText, DateTime.now(), imageUrl, user.uid,
-              user?.photoUrl ?? '', descText, user?.displayName ?? 'Anonymous');
+          recipe = new Recipes(
+              titleText,
+              DateTime.now(),
+              imageUrl,
+              userModel.userId,
+              userModel?.userPhotoUrl ?? '',
+              descText,
+              userModel?.userName ?? 'Anonymous');
         });
 
         final reference =

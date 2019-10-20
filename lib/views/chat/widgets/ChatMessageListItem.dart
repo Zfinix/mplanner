@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:mplanner/widgets/imageBgWidget.dart';
 
 class ChatMessageListItem extends StatelessWidget {
   final DataSnapshot messageSnapshot;
@@ -22,16 +23,15 @@ class ChatMessageListItem extends StatelessWidget {
       child: new Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         child: new Row(
-          children: currentUserEmail == messageSnapshot.value['email'] ||
-                  userName == messageSnapshot.value['senderName']
-              ? getSentMessageLayout()
+          children: currentUserEmail == messageSnapshot.value['email']
+              ? getSentMessageLayout(context)
               : getReceivedMessageLayout(),
         ),
       ),
     );
   }
 
-  List<Widget> getSentMessageLayout() {
+  List<Widget> getSentMessageLayout(context) {
     //print("Image:" + messageSnapshot.value['imageUrl']);
 
     return <Widget>[
@@ -48,13 +48,27 @@ class ChatMessageListItem extends StatelessWidget {
               new Container(
                   margin: const EdgeInsets.only(top: 5.0),
                   child: messageSnapshot.value['imageUrl'] != null
-                      ? new ClipRRect(
-                          borderRadius: new BorderRadius.circular(18.0),
-                          child: new FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/hkloader.gif',
-                        width: 250,
-                        image: messageSnapshot.value['imageUrl'],
-                      ))
+                      ? GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                fullscreenDialog: true,
+                                builder: (context) => ImageBGScaffold(
+                                  bg: messageSnapshot.value['imageUrl'],
+                                  isFromNetwork: true,
+                                  child: Container(),
+                                ),
+                              ),
+                            );
+                          },
+                          child: new ClipRRect(
+                              borderRadius: new BorderRadius.circular(18.0),
+                              child: new FadeInImage.assetNetwork(
+                                placeholder: 'assets/images/placeholder.jpg',
+                                width: 250,
+                                image: messageSnapshot.value['imageUrl'],
+                              )))
                       : new Text(messageSnapshot.value['text'],
                           style: new TextStyle(
                               fontSize: 15.0, color: Colors.white)))
@@ -95,7 +109,7 @@ class ChatMessageListItem extends StatelessWidget {
             new Text(messageSnapshot.value['senderName'],
                 style: new TextStyle(
                     fontSize: 11.0,
-                    color: Colors.black,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold)),
             new Container(
               margin: const EdgeInsets.only(top: 5.0),

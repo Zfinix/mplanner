@@ -20,27 +20,27 @@ import '../dbDetails.dart';
 import 'package:mplanner/views/foodPlan/foodPlanPage.dart';
 
 class HomeFragment extends StatefulWidget {
+  final profileNode;
   final Widget child;
+  final UserModel userModel;
 
-  HomeFragment({Key key, this.child}) : super(key: key);
+  HomeFragment(
+      {Key key,
+      this.child,
+      @required this.profileNode,
+      @required this.userModel})
+      : super(key: key);
 
   _HomeFragmentState createState() => _HomeFragmentState();
 }
 
 class _HomeFragmentState extends State<HomeFragment> {
   FirebaseDatabase database;
-  final userReference = FirebaseDatabase.instance
-      .reference()
-      .child('users')
-      .orderByChild('userId');
 
   BaseAuth auth = new Auth();
-  UserModel userModel;
-  FirebaseUser user;
 
   var reference;
   bool hasData = false;
-  String profileNode;
 
   @override
   void initState() {
@@ -50,20 +50,7 @@ class _HomeFragmentState extends State<HomeFragment> {
     setState(() {
       reference = database.reference().child('recipes');
     });
-    loadUserData();
     super.initState();
-  }
-
-  loadUserData() async {
-    user = await auth.getCurrentUser();
-    var v = (await userReference.equalTo(user.uid).once());
-
-    if (v.value != null) {
-      setState(() {
-        userModel = UserModel.fromMap(v.value.values.toList()[0]);
-        profileNode = v.value.keys.toList()[0];
-      });
-    }
   }
 
   loadData() async {
@@ -99,16 +86,16 @@ class _HomeFragmentState extends State<HomeFragment> {
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(
-                    user: user,
-                    userModel: userModel,
-                    profileNode: profileNode,
+              if (widget.userModel != null)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(
+                      userModel: widget.userModel,
+                      profileNode: widget.profileNode,
+                    ),
                   ),
-                ),
-              );
+                );
             },
             tooltip: 'Profile',
           ),
@@ -148,38 +135,45 @@ class _HomeFragmentState extends State<HomeFragment> {
                       ),
                       DBTips(),
                       Padding(
-                        padding: const EdgeInsets.only(left: 35.0, top: 50),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Text(
-                              'RECIPIES',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 12),
-                            ),
-                            yMargin40,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Opacity(
-                                  opacity: 0.09,
-                                  child: Container(
-                                    width: 160,
-                                    height: 160,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(90),
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                                'https://media.istockphoto.com/vectors/open-box-icon-vector-id635771440?k=6&m=635771440&s=612x612&w=0&h=IESJM8lpvGjMO_crsjqErVWzdI8sLnlf0dljbkeO7Ig=',
-                                                scale: 3))),
+                        padding: const EdgeInsets.only(left: 35.0, top: 35),
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Text(
+                                'RECIPIES',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 12),
+                              ),
+                              yMargin40,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Opacity(
+                                    opacity: 0.09,
+                                    child: Container(
+                                      width: 80,
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(90),
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                  'https://media.istockphoto.com/vectors/open-box-icon-vector-id635771440?k=6&m=635771440&s=612x612&w=0&h=IESJM8lpvGjMO_crsjqErVWzdI8sLnlf0dljbkeO7Ig=',
+                                                  scale: 3))),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            yMargin20,
-                            Center(child: Text('No Recipies')),
-                          ],
+                                ],
+                              ),
+                              yMargin20,
+                              Center(
+                                  child: Text(
+                                'No Recipies Yet',
+                                style: TextStyle(fontWeight: FontWeight.w200),
+                              )),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -216,22 +210,22 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 fontWeight: FontWeight.w400, fontSize: 12),
                           ),
                         ),
-                       GestureDetector(
-                         onTap: () {
-                           Navigator.push(
-                             context,
-                             MaterialPageRoute(
-                                 fullscreenDialog: true,
-                                 builder: (context) => RecipeDetails(
-                                   recipe: recipe,
-                                 )),
-                           );
-                         },
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  fullscreenDialog: true,
+                                  builder: (context) => RecipeDetails(
+                                        recipe: recipe,
+                                      )),
+                            );
+                          },
                           child: new RecipeCard(
                               name: recipe.name,
                               title: recipe.title,
                               desc: recipe.description,
-                              profilePicUrl: recipe.profilePicUrl,
+                              profilePicUrl: recipe?.profilePicUrl ?? '',
                               imageUrl: recipe.imageUrl,
                               userId: recipe.userId,
                               timeStamp: recipe.timestamp),

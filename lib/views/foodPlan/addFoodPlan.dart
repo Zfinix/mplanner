@@ -6,13 +6,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mplanner/models/foodData.dart';
+import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/utils/size.dart';
 import 'package:mplanner/views/auth/baseAuth.dart';
 
 class AddFoodPlanPage extends StatefulWidget {
-  final FirebaseUser user;
-  AddFoodPlanPage({Key key, @required this.user}) : super(key: key);
+  
+  AddFoodPlanPage({Key key}) : super(key: key);
 
   _AddFoodPlanPageState createState() => _AddFoodPlanPageState();
 }
@@ -20,7 +21,7 @@ class AddFoodPlanPage extends StatefulWidget {
 class _AddFoodPlanPageState extends State<AddFoodPlanPage> {
   File image;
   FirebaseStorage _storage = FirebaseStorage.instance;
-  FirebaseUser user;
+  UserModel userModel;
   bool isLoading = false;
   FoodDataModel foodDataModel;
 
@@ -39,7 +40,7 @@ class _AddFoodPlanPageState extends State<AddFoodPlanPage> {
   }
 
   loadData() async {
-    user = await auth.getCurrentUser();
+    userModel = await auth.getCurrentUserData();
   }
 
   @override
@@ -281,7 +282,7 @@ class _AddFoodPlanPageState extends State<AddFoodPlanPage> {
   addFoodPlan() async {
     String imageUrl;
     try {
-      if (_formKey.currentState.validate()) {
+      if (_formKey.currentState.validate() && userModel != null) {
         setState(() {
           isLoading = true;
         });
@@ -318,10 +319,10 @@ class _AddFoodPlanPageState extends State<AddFoodPlanPage> {
           timeStamp: DateTime.now(),
           desc: descText,
           imageUrl: imageUrl,
-          name: (widget.user ?? user).displayName,
-          photoUrl: (widget.user ?? user).photoUrl,
+          name: userModel.userName,
+          photoUrl: userModel.userPhotoUrl,
           title: titleText,
-          userId: (widget.user ?? user).uid,
+          userId: userModel.userId,
         );
 
         print(foodDataModel.toJson());

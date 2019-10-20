@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/views/home/controller.dart';
 import 'package:mplanner/utils/margin.dart';
 import 'package:mplanner/utils/validator.dart' as validator;
@@ -85,12 +86,19 @@ class _LoginPageState extends State<LoginPage> {
         print('Signed in: $userId');
 
         if (userId.length > 0 && userId != null) {
+          UserModel userModel = await auth.getCurrentUserData();
+
           FirebaseUser user = await auth.getCurrentUser();
+
           Navigator.pop(context);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Controller(user: user),
+              builder: (context) => Controller(
+                user: user,
+                userModel: userModel,
+                profileNode: auth.profileNode,
+              ),
             ),
           );
         }
@@ -111,7 +119,8 @@ class _LoginPageState extends State<LoginPage> {
               context: context,
               builder: (_) => new AlertDialog(
                     title: new Text("Error"),
-                    content: new Text("There is no user record corresponding to this identifier. The user may have been deleted"),
+                    content: new Text(
+                        "There is no user record corresponding to this identifier. The user may have been deleted"),
                   ));
         }
       }
@@ -135,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: EdgeInsets.fromLTRB(30.0, 0, 30.0, 0),
       child: TextFormField(
-        //initialValue: 'qqqqqq',
+        initialValue: 'ellamia16',
         validator: (value) {
           if (value.length > 4) {
             setState(() {
@@ -162,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: EdgeInsets.fromLTRB(30.0, 0, 30.0, 0),
       child: TextFormField(
-        // initialValue: 'chiziaruhoma@gmail.com',
+        initialValue: 'hopephilip355@gmail.com',
         validator: (value) {
           if (validator.isEmail(value)) {
             setState(() {

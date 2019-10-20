@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mplanner/models/userModel.dart';
 import 'package:mplanner/utils/margin.dart';
+import 'package:mplanner/views/auth/baseAuth.dart';
 import 'package:mplanner/views/auth/loginPage.dart';
-import 'package:mplanner/views/chat/auth/baseAuth.dart';
 import 'package:mplanner/views/home/controller.dart';
 import 'package:mplanner/views/intersit/planPage.dart';
 
@@ -105,13 +106,20 @@ class _IntersitPageState extends State<IntersitPage> {
   }
 
   void login() async {
+    
     FirebaseUser user = await auth.getCurrentUser();
-    if (user != null) {
+    UserModel userModel = await auth.getCurrentUserData();
+
+    if (user != null && userModel != null) {
       Navigator.pop(context);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => Controller(user: user),
+          builder: (context) => Controller(
+            user: user,
+            userModel: userModel,
+            profileNode: auth.profileNode,
+          ),
         ),
       );
     }
